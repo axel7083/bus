@@ -52,18 +52,18 @@ class Circle:
 
 class Bus:
     def __init__(self, speed: int, occupant: int, maxcapacity: int):
-        self.__speed = speed;
-        self.__occupant = occupant;
-        self.__max_capacity = maxcapacity;
+        self.__speed = speed
+        self.__occupant = occupant
+        self.__max_capacity = maxcapacity
 
     def get_speed(self):
-        return self.__speed;
+        return self.__speed
 
     def get_occupant(self):
-        return self.__occupant;
+        return self.__occupant
 
     def get_max_capacity(self):
-        return self.__max_capacity;
+        return self.__max_capacity
 
 
 class BusStop:
@@ -87,8 +87,7 @@ class RunningBoard:
 
 
 class BusLine:
-    def __init__(self, name: str, path,
-                 board: RunningBoard):  # def __init__(self, name: str, path: list[Line], board: RunningBoard):
+    def __init__(self, name: str, path, board: RunningBoard):
         self.__name = name
         self.__path = path
         self.__runningBoard = board
@@ -138,14 +137,14 @@ class BusCompany:
 class StopSchedule:
 
     def __init__(self, order: int, schedule):
-        self.__order = order;
-        self.__schedule = schedule;
+        self.__order = order
+        self.__schedule = schedule
 
     def get_order(self):
-        return self.order;
+        return self.__order
 
     def get_schedule(self):
-        return self.schedule;
+        return self.__schedule
 
 
 def print_hi(name):
