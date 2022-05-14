@@ -9,3 +9,6 @@ class StopSchedule:
 
     def get_schedule(self):
         return self.__schedule
+
+    def set_order(self, order):
+        self.__order = order
