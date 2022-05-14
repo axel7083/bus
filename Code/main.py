@@ -51,10 +51,10 @@ class Circle:
 
 
 class Bus:
-    def __init__(self, speed: int, occupant: int, maxcapacity: int):
+    def __init__(self, speed: int, occupant: int, max_capacity: int):
         self.__speed = speed
         self.__occupant = occupant
-        self.__max_capacity = maxcapacity
+        self.__max_capacity = max_capacity
 
     def get_speed(self):
         return self.__speed
@@ -67,14 +67,14 @@ class Bus:
 
 
 class BusStop:
-    def __init__(self, name: str, nbClient: int):
+    def __init__(self, name: str, nb_client: int):
         self.__name = name
-        self.__nbClient = nbClient
+        self.__nbClient = nb_client
 
-    def getName(self):
+    def get_name(self):
         return self.__name
 
-    def getNbClient(self):
+    def get_nb_client(self):
         return self.__nbClient
 
 
@@ -98,7 +98,7 @@ class BusLine:
     def get_path(self):
         return self.__path
 
-    def getRunningBoard(self):
+    def get_running_board(self):
         return self.__runningBoard
 
 
