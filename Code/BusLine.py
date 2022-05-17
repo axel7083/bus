@@ -1,7 +1,7 @@
 from typing import List
 
-import Road
-import RunningBoard
+from Road import Road
+from RunningBoard import RunningBoard
 
 
 class BusLine:
