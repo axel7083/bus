@@ -2,9 +2,17 @@ from Bus import Bus
 from BusLine import BusLine
 from typing import List
 
+""" Class that instantiate a bus company that depends on 2 parameters the list of his buslines, and the list of his buses.
 
+@Author: jmaccou 
+"""
 class BusCompany:
-    def __init__(self, bus_lines: List[BusLine], bus_list: List[Bus]) -> None:  # def __init__(self, bus_lines: list[BusLine], bus_list: list[Bus]):
+    def __init__(self, bus_lines: List[BusLine], bus_list: List[Bus]) -> None:
+        """ Constructor of the bus company.
+        
+        :param bus_lines: the initial list of bus lines of the company.
+        :param bus_list: the initial list of buses of the company.
+        """
         self.__bus_lines = bus_lines
         self.__bus_list = bus_list
 

@@ -1,8 +1,7 @@
 """ This class implements the class Bus. We consider a Bus as 3 parameters, his maximum capacity, his number of passengers and his speed.
 
-@author jmaccou
+@Author: jmaccou
 """
-
 class Bus :
     """ The two parameters speed and passenger are set as private and are base setted as 0 because there is no reason to think that a bus is created with speed
     or with passengers.
