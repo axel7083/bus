@@ -15,5 +15,5 @@ class BusCompany:
     def get_total_capacity(self) -> int:
         totalCapa = 0
         for bus in self.__bus_list:
-            totalCapa += bus.getCapacity()
+            totalCapa += bus.get_capacity()
         return totalCapa
