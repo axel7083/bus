@@ -99,6 +99,24 @@ class RunningBoard:
             val += stop.get_name() + ":" + str(self.__timetable[stop].get_order()) + "\n"
         return val.strip()
 
+    def __iter__(self):
+        return RunningBoard.RunningBoardIterator(self)
+
+    class RunningBoardIterator:
+        def __init__(self, board):
+            self.board = board
+            self.index = 0
+
+        def __next__(self):
+            if self.index >= len(self.board.__index_map.keys()):
+                raise StopIteration
+            else:
+                self.index += 1
+                return (
+                    self.board.__timetable[self.board.__index_map[self.index - 1]],
+                    self.board.__index_map[self.index - 1]
+                )
+
 
 if __name__ == '__main__':
     runningBoard = RunningBoard()
