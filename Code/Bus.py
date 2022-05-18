@@ -21,7 +21,7 @@ class Bus :
 
         :return: the state of the bus in a string.
         """
-        state = 'Capacity = ' + str(self.getCapacity()) + '\nSpeed = ' + str(self.getSpeed()) + '\nPassengers = ' + str(self.getPassenger())
+        state = 'Capacity = ' + str(self.get_capacity()) + '\nSpeed = ' + str(self.get_speed()) + '\nPassengers = ' + str(self.get_passenger())
         return state
 
     def get_capacity(self) -> int:

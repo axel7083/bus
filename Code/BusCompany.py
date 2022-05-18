@@ -17,15 +17,27 @@ class BusCompany:
         self.__bus_list = bus_list
 
     def get_bus_lines(self) -> List[BusLine]:
+        """
+        :return: the list of all buslines of the company
+        """
         return self.__bus_lines
 
     def get_bus_list(self) -> List[Bus]:
+        """
+        :return: the list of all the buses of the company
+        """
         return self.__bus_list
     
     def get_number_of_buses(self) -> int:
-        return self.__bus_list.len()
+        """
+        :return: the number of buses of the company
+        """
+        return len(self.__bus_list)
     
     def get_total_capacity(self) -> int:
+        """
+        :return: the sum of maximum capacity of all the buses of the company
+        """
         totalCapa = 0
         for bus in self.__bus_list:
             totalCapa += bus.get_capacity()
