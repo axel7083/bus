@@ -3,8 +3,8 @@ class BusStop:
         self.__name = name
         self.__nbClient = nb_client
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self.__name
 
-    def get_nb_client(self):
+    def get_nb_client(self) -> int:
         return self.__nbClient
