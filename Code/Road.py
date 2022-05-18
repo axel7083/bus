@@ -7,11 +7,11 @@ class Road:
         self.__traffic = traffic
         self.__speedlimit = speedlimit
 
-    def get_position(self):
+    def get_position(self) -> Line:
         return self.__position
 
-    def get_traffic(self):
+    def get_traffic(self) -> float:
         return self.__traffic
 
-    def get_speed_limit(self):
+    def get_speed_limit(self) -> int:
         return self.__speedlimit

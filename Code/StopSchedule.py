@@ -8,11 +8,11 @@ class StopSchedule:
         self.__order = order
         self.__schedule = schedule
 
-    def get_order(self):
+    def get_order(self) -> int:
         return self.__order
 
-    def get_schedule(self):
+    def get_schedule(self) -> List[date]:
         return self.__schedule.copy()
 
-    def set_order(self, order):
+    def set_order(self, order) -> None:
         self.__order = order

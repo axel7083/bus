@@ -3,8 +3,8 @@ class Point2D:
         self.__x = x
         self.__y = y
 
-    def get_x(self):
+    def get_x(self) -> float:
         return self.__x
 
-    def get_y(self):
+    def get_y(self) -> float:
         return self.__y
