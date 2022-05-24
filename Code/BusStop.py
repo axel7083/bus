@@ -31,10 +31,15 @@ class BusStop(Point2D):
     def get_pos(self) -> Tuple[float, float]:
         return self.get_x(), self.get_y()
 
+    def add_clients(self, newClients : int) -> None:
+        assert newClients >= 0
+        self.__nbClient += newClients
+
     def bus_happens(self, bus : Bus):
         bus.remove_passenger(self.__weightedrandint(bus.get_passenger(), self.__attractivity))
-        bus.add_passenger(max(self.__nbClient, bus.get_capacity()-bus.get_passenger()))
-
+        newPassengers = max(self.__nbClient, bus.get_capacity()-bus.get_passenger())
+        bus.add_passenger(newPassengers)
+        self.__nbClient -= newPassengers
 
     @staticmethod
     def __weightedrandint(max: int, weight : int) -> int:
