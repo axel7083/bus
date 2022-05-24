@@ -65,7 +65,7 @@ class BusStop(Point2D):
         """ Function that handle when a bus arrives on a bus stop
         This function remove passengers of the bus based on a random int that is weighted function of the attractivity of the bus stop
 
-        :param bus: the instance of the bus we have to heandle with
+        :param bus: the instance of the bus we have to handle with
         """
         bus.remove_passenger(self.__weightedrandint(bus.get_passenger(), self.__attractivity))
         newPassengers = max(self.__nbClient, bus.get_capacity()-bus.get_passenger())
