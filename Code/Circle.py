@@ -1,4 +1,5 @@
-import Point2D
+from cmath import sqrt
+from Point2D import Point2D
 
 """ This class reprensent a circle in a 2 dimentionnal space defined by 2 values. It's center that is defined by a Point2D, and it's radius defined by a float.
 This class is useful to represent zones with their density of population.
@@ -32,3 +33,7 @@ class Circle:
         :param newRadius: the new radius of the circle.
         """
         self.__radius = newRadius
+
+    def is_on_disk(self, point : Point2D):
+        distance = sqrt((self.__center.get_x() - point.get_x())**2 + (self.__center.get_y() - point.get_y())**2)
+        return distance < self.__radius
