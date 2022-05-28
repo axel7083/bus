@@ -7,6 +7,8 @@ from Bus import Bus
 
 @Author: jmaccou
 """
+
+
 class BusStop(Point2D):
     """
     __nbClient is always initialized at 0 as there is no reason to think that it can be some clients in the BusStop at it's creation.
@@ -26,9 +28,12 @@ class BusStop(Point2D):
 
     def __eq__(self, __o: object) -> bool:
         if isinstance(__o, BusStop):
-            return self.get_pos() == __o.get_pos() and self.__name == __o.__name
+            return hash(__o) == hash(self)
         else:
             return False
+
+    def __hash__(self):
+        return hash(f"{self.get_pos()}:{self.get_name()}")
 
     def get_name(self) -> str:
         """ Getter on the parameter __name
@@ -48,32 +53,32 @@ class BusStop(Point2D):
         """
         return self.get_x(), self.get_y()
 
-    def set_attractivity(self, newAttractivity : int) -> None:
+    def set_attractivity(self, newAttractivity: int) -> None:
         """ Setter on the parameter __attractivity
         :param newAttractivity: the new attractivity of the bus stop
         """
         self.__attractivity = newAttractivity
 
-    def add_clients(self, newClients : int) -> None:
+    def add_clients(self, newClients: int) -> None:
         """ Add clients on the bus stop
         :param newClients: number of clients to add to the bus stop
         """
         assert newClients >= 0
         self.__nbClient += newClients
 
-    def bus_happens(self, bus : Bus):
+    def bus_happens(self, bus: Bus):
         """ Function that handle when a bus arrives on a bus stop
         This function remove passengers of the bus based on a random int that is weighted function of the attractivity of the bus stop
 
         :param bus: the instance of the bus we have to handle with
         """
         bus.remove_passenger(self.__weightedrandint(bus.get_passenger(), self.__attractivity))
-        newPassengers = max(self.__nbClient, bus.get_capacity()-bus.get_passenger())
+        newPassengers = max(self.__nbClient, bus.get_capacity() - bus.get_passenger())
         bus.add_passenger(newPassengers)
         self.__nbClient -= newPassengers
 
     @staticmethod
-    def __weightedrandint(max: int, weight : int) -> int:
+    def __weightedrandint(max: int, weight: int) -> int:
         """ This function is a static function that returns a weighted randint based on the weight we gave to it to simulate the person exiting the bus when it arrives.
         There is 4 cases with this function :
             - weight = 0 : it always return the max, everybody is supposed to exit the bus at the terminus
@@ -86,11 +91,11 @@ class BusStop(Point2D):
         if weight == 0:
             return max
         elif weight == 1 or weight == 3:
-            sum =0
+            sum = 0
             for _ in range(int(1.6 * max)):
-                sum+=randint(0,1)
+                sum += randint(0, 1)
             if sum > max:
-                sum = 2 * max - sum 
+                sum = 2 * max - sum
             if weight == 1:
                 return sum
             else:

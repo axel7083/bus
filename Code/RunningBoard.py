@@ -22,8 +22,8 @@ class RunningBoard:
             raise ValueError("This buss stop is already registered in this running board")
         elif schedule.get_order() in self.__index_map:
             raise ValueError(
-                f"A bus stop with the scheduled order {schedule.get_order()}\
-                 already exist int this running board"
+                f"A bus stop with the scheduled order {schedule.get_order()}" +
+                "already exist int this running board"
             )
         else:
             self.__timetable[bus_stop] = schedule
@@ -104,19 +104,20 @@ class RunningBoard:
         return val.strip()
 
     def __iter__(self):
-        return RunningBoard.RunningBoardIterator(self)
+        return RunningBoard.RunningBoardIterator(self.__timetable, self.__index_map)
 
     class RunningBoardIterator:
-        def __init__(self, board):
-            self.board = board
-            self.index = 0
+        def __init__(self, timetable, index_map):
+            self.__timetable = timetable
+            self.__index_map = index_map
+            self.__index = 0
 
         def __next__(self):
-            if self.index >= len(self.board.__index_map.keys()):
+            if self.__index >= len(self.__index_map.keys()):
                 raise StopIteration
             else:
-                self.index += 1
+                self.__index += 1
                 return (
-                    self.board.__timetable[self.board.__index_map[self.index - 1]],
-                    self.board.__index_map[self.index - 1]
+                    self.__timetable[self.__index_map[self.__index - 1]],
+                    self.__index_map[self.__index - 1]
                 )
