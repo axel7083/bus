@@ -110,14 +110,16 @@ class RunningBoard:
         def __init__(self, timetable, index_map):
             self.__timetable = timetable
             self.__index_map = index_map
+            self.__indexes = [x for x in self.__index_map.keys()]
+            self.__indexes.sort()
             self.__index = 0
 
         def __next__(self):
-            if self.__index >= len(self.__index_map.keys()):
+            if self.__index >= len(self.__indexes):
                 raise StopIteration
             else:
                 self.__index += 1
                 return (
-                    self.__timetable[self.__index_map[self.__index - 1]],
-                    self.__index_map[self.__index - 1]
+                    self.__timetable[self.__index_map[self.__indexes[self.__index - 1]]],
+                    self.__index_map[self.__indexes[self.__index - 1]]
                 )

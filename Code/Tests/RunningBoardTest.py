@@ -75,4 +75,60 @@ class RunningBoardTest(unittest.TestCase):
         self.run.add_entry(self.stops[0], self.schedules[0])
         self.run.get_schedule(self.schedules[1].get_order())
 
-    
+    def test_remove_one_one_schedule(self):
+        self.run.add_entry(self.stops[0], self.schedules[0])
+        self.run.remove_entry_by_schedule(self.schedules[0].get_order())
+        self.__iterate(0)
+
+    def test_remove_one_one_bus(self):
+        self.run.add_entry(self.stops[0], self.schedules[0])
+        self.run.remove_entry_by_bus_stop(self.stops[0])
+        self.__iterate(0)
+
+    def test_remove_many_one_schedule(self):
+        self.__add_all()
+        self.run.remove_entry_by_schedule(self.schedules[0].get_order())
+        self.__iterate(len(self.stops) - 1)
+
+    def test_remove_many_one_bus(self):
+        self.__add_all()
+        self.run.remove_entry_by_bus_stop(self.stops[0])
+        self.__iterate(len(self.stops) - 1)
+
+    def test_insert_first_no_shift(self):
+        self.run.insert_entry(self.stops[0], self.schedules[0])
+        self.__iterate(1)
+        self.assertEqual(self.run.get_schedule(self.schedules[0].get_order()), self.schedules[0])
+
+    def test_insert_last(self):
+        self.__add_all()
+        schedule = StopSchedule(
+            max(*self.schedules, key=lambda s: s.get_order()).get_order() + 1,
+            []
+        )
+        self.run.insert_entry(
+            BusStop("shift", 0, 0, 0),
+            schedule
+        )
+        self.__iterate(len(self.stops) + 1)
+        self.assertEqual(self.run.get_schedule(schedule.get_order()), schedule)
+
+    def test_insert_first_shift(self):
+        self.__add_all()
+        schedule = StopSchedule(0, [])
+        self.run.insert_entry(
+            BusStop("shift", 0, 0, 0),
+            schedule
+        )
+        self.assertEqual(self.run.get_schedule(schedule.get_order()), schedule)
+
+        self.schedules.sort(key=lambda s: s.get_order())
+
+        last = None
+
+        for schedule in self.schedules:
+            if last is not None:
+                self.assertGreater(schedule.get_order(), last.get_order())
+            self.assertEqual(self.run.get_schedule(schedule.get_order()), schedule)
+
+            last = schedule
