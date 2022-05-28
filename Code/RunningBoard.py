@@ -1,6 +1,10 @@
 from BusStop import BusStop
 from StopSchedule import StopSchedule
 
+"""
+@Author: cobrecht
+"""
+
 
 class RunningBoard:
     def __init__(self):
@@ -116,33 +120,3 @@ class RunningBoard:
                     self.board.__timetable[self.board.__index_map[self.index - 1]],
                     self.board.__index_map[self.index - 1]
                 )
-
-
-if __name__ == '__main__':
-    runningBoard = RunningBoard()
-    runningBoard.add_entry(
-        BusStop("osef0", 12),
-        StopSchedule(0, None)
-    )
-    runningBoard.add_entry(
-        BusStop("osef1", 12),
-        StopSchedule(1, None)
-    )
-    runningBoard.add_entry(
-        BusStop("osef2", 12),
-        StopSchedule(2, None)
-    )
-    runningBoard.add_entry(
-        BusStop("osef3", 12),
-        StopSchedule(3, None)
-    )
-    runningBoard.add_entry(
-        BusStop("osef5", 12),
-        StopSchedule(5, None)
-    )
-    runningBoard.insert_entry(
-        BusStop("osef2_", 12),
-        StopSchedule(2, None)
-    )
-
-    print(str(runningBoard))

@@ -3,6 +3,10 @@ from typing import List
 from Road import Road
 from RunningBoard import RunningBoard
 
+"""
+@Author: cobrecht
+"""
+
 
 class BusLine:
     def __init__(self, identifier: str, path: List[Road], board: RunningBoard = None):
@@ -42,6 +46,7 @@ class BusLine:
         return self.__runningBoard
 
     def get_punctuality(self):
+        # TODO
         """
         :return:
         """
