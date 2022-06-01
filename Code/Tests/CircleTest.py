@@ -4,6 +4,11 @@ import unittest
 from Circle import Circle
 from Point2D import Point2D
 
+"""
+Test cases for the Circle class
+@Author: cobrecht
+"""
+
 
 class CircleTest(unittest.TestCase):
 
