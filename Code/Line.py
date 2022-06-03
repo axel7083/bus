@@ -1,6 +1,10 @@
 from Point2D import Point2D
 from typing import Tuple
 
+"""
+@Author: cobrecht
+"""
+
 
 class Line:
     def __init__(self, begin: Point2D, end: Point2D):
@@ -25,6 +29,10 @@ class Line:
 
 
 class LineMath:
+    """
+    Helper class which contains static methods to operate with lines
+    """
+
     @staticmethod
     def get_perpendicular(a: float, b: float, point: Point2D):
         """
