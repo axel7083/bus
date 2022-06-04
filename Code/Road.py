@@ -1,8 +1,20 @@
-from Line import Line, LineMath
-from Point2D import Point2D
+from .Line import Line, LineMath
+from .Point2D import Point2D
+
+"""
+@Author: cobrecht
+"""
 
 
 class Road:
+    """
+    class representing a Road, a road is characterized by a line, a value of traffic and a speedlimit.
+
+    :param position: the line representing the position of the road
+    :param traffic: a float which is a factor by which the speedlimit will be multiplied to get the effective speed
+    :param speedlimit: the speed limit of the road
+    """
+
     def __init__(self, position: Line, traffic: float, speedlimit: int):
         self.__position = position
         self.__traffic = traffic
