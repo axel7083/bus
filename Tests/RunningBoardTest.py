@@ -1,8 +1,8 @@
 import unittest
 
-from BusStop import BusStop
-from RunningBoard import RunningBoard
-from StopSchedule import StopSchedule
+from Code.BusStop import BusStop
+from Code.RunningBoard import RunningBoard
+from Code.StopSchedule import StopSchedule
 
 """
 Tests for the RunningBoard class
@@ -62,18 +62,22 @@ class RunningBoardTest(unittest.TestCase):
 
     def test_get_with_one(self):
         self.run.add_entry(self.stops[0], self.schedules[0])
-        self.assertEqual(self.run.get_schedule(self.schedules[0].get_order()), self.schedules[0])
+        self.assertEqual(self.run.get_schedule_by_order(self.schedules[0].get_order()), self.schedules[0])
+
+    def test_get_with_one_by_stop(self):
+        self.run.add_entry(self.stops[0], self.schedules[0])
+        self.assertEqual(self.run.get_schedule_by_stop(self.stops[0]), self.schedules[0])
 
     def test_get_with_many(self):
         self.__add_all()
 
         for i in range(len(self.stops)):
-            self.assertEqual(self.run.get_schedule(self.schedules[i].get_order()), self.schedules[i])
+            self.assertEqual(self.run.get_schedule_by_order(self.schedules[i].get_order()), self.schedules[i])
 
     @unittest.expectedFailure
     def test_get_without(self):
         self.run.add_entry(self.stops[0], self.schedules[0])
-        self.run.get_schedule(self.schedules[1].get_order())
+        self.run.get_schedule_by_order(self.schedules[1].get_order())
 
     def test_remove_one_one_schedule(self):
         self.run.add_entry(self.stops[0], self.schedules[0])
@@ -98,7 +102,7 @@ class RunningBoardTest(unittest.TestCase):
     def test_insert_first_no_shift(self):
         self.run.insert_entry(self.stops[0], self.schedules[0])
         self.__iterate(1)
-        self.assertEqual(self.run.get_schedule(self.schedules[0].get_order()), self.schedules[0])
+        self.assertEqual(self.run.get_schedule_by_order(self.schedules[0].get_order()), self.schedules[0])
 
     def test_insert_last(self):
         self.__add_all()
@@ -111,7 +115,7 @@ class RunningBoardTest(unittest.TestCase):
             schedule
         )
         self.__iterate(len(self.stops) + 1)
-        self.assertEqual(self.run.get_schedule(schedule.get_order()), schedule)
+        self.assertEqual(self.run.get_schedule_by_order(schedule.get_order()), schedule)
 
     def test_insert_first_shift(self):
         self.__add_all()
@@ -120,7 +124,7 @@ class RunningBoardTest(unittest.TestCase):
             BusStop("shift", 0, 0, 0),
             schedule
         )
-        self.assertEqual(self.run.get_schedule(schedule.get_order()), schedule)
+        self.assertEqual(self.run.get_schedule_by_order(schedule.get_order()), schedule)
 
         self.schedules.sort(key=lambda s: s.get_order())
 
@@ -129,6 +133,6 @@ class RunningBoardTest(unittest.TestCase):
         for schedule in self.schedules:
             if last is not None:
                 self.assertGreater(schedule.get_order(), last.get_order())
-            self.assertEqual(self.run.get_schedule(schedule.get_order()), schedule)
+            self.assertEqual(self.run.get_schedule_by_order(schedule.get_order()), schedule)
 
             last = schedule

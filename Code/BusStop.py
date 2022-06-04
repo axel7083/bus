@@ -1,7 +1,7 @@
 from random import randint
 from typing import Tuple
-from Point2D import Point2D
-from Bus import Bus
+from .Point2D import Point2D
+from .Bus import Bus
 
 """ Class that represents the bus Stops, it inherits from Point2D as we consider it as a point on the road.
 
@@ -40,6 +40,9 @@ class BusStop(Point2D):
         :return: the name of the bus stop
         """
         return self.__name
+
+    def set_name(self, name):
+        self.__name = name
 
     def get_nb_client(self) -> int:
         """ Getter on the parameter __nbClients

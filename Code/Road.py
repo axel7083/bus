@@ -1,5 +1,5 @@
-from Line import Line, LineMath
-from Point2D import Point2D
+from .Line import Line, LineMath
+from .Point2D import Point2D
 
 """
 @Author: cobrecht

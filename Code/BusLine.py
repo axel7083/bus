@@ -1,7 +1,7 @@
 from typing import List
 
-from Road import Road
-from RunningBoard import RunningBoard
+from .Road import Road
+from .RunningBoard import RunningBoard
 
 """
 @Author: cobrecht
@@ -26,6 +26,12 @@ class BusLine:
         if board is None:
             self.__runningBoard = RunningBoard()
         self.__runningBoard = board
+
+    def __eq__(self, other):
+        if isinstance(other, BusLine):
+            if other.get_identifier() == self.get_identifier():
+                return True
+        return False
 
     def get_identifier(self) -> str:
         """

@@ -1,5 +1,5 @@
-from BusStop import BusStop
-from StopSchedule import StopSchedule
+from .BusStop import BusStop
+from .StopSchedule import StopSchedule
 
 """
 @Author: cobrecht
@@ -40,11 +40,11 @@ class RunningBoard:
         to_remap = []
         while index + 1 < len(indexes) and indexes[index] + 1 >= indexes[index + 1]:
             to_remap.append(index)
-            self.get_schedule(index).set_order(indexes[index] + 1)
+            self.get_schedule_by_order(index).set_order(indexes[index] + 1)
             index += 1
 
         to_remap.append(index)
-        self.get_schedule(index).set_order(indexes[index] + 1)
+        self.get_schedule_by_order(index).set_order(indexes[index] + 1)
         to_remap.reverse()
 
         for i in to_remap:
@@ -66,7 +66,7 @@ class RunningBoard:
             self._shift(schedule.get_order())
         self.add_entry(bus_stop, schedule)
 
-    def get_schedule(self, schedule_order: int) -> StopSchedule:
+    def get_schedule_by_order(self, schedule_order: int) -> StopSchedule:
         """
         Returns the schedule associated with the given order.
         :param schedule_order: The order of the schedule to return
@@ -75,6 +75,9 @@ class RunningBoard:
         if schedule_order not in self.__index_map:
             raise ValueError(f"There is no schedule with order {schedule_order} registered in this running board")
         return self.__timetable[self.__index_map[schedule_order]]
+
+    def get_schedule_by_stop(self, stop: BusStop):
+        return self.__timetable[stop]
 
     def remove_entry_by_schedule(self, schedule_order: int) -> None:
         """

@@ -2,26 +2,29 @@
 
 @Author: jmaccou
 """
-class Bus :
+
+
+class Bus:
     """ The two parameters speed and passenger are set as private and are base setted as 0 because there is no reason to think that a bus is created with speed
     or with passengers.
     """
     __speed = 0.
     __passenger = 0
-    
+
     def __init__(self, newCapa: int) -> None:
         """ Constructor of the bus.
 
         :param newCapa: the capacity of the bus we want to create.
         """
         self.__maxCapacity = newCapa
-    
+
     def __str__(self) -> str:
         """ Create a way to transform the state of the bus into a string.
 
         :return: the state of the bus in a string.
         """
-        state = 'Capacity = ' + str(self.get_capacity()) + '\nSpeed = ' + str(self.get_speed()) + '\nPassengers = ' + str(self.get_passenger())
+        state = 'Capacity = ' + str(self.get_capacity()) + '\nSpeed = ' + str(
+            self.get_speed()) + '\nPassengers = ' + str(self.get_passenger())
         return state
 
     def get_capacity(self) -> int:
@@ -64,6 +67,5 @@ class Bus :
         :param nbPassengersLeaving: the number of passengers that are leaving the bus.
         """
         self.__passenger -= nbPassengersLeaving
-        if self.__passenger<= 0:
+        if self.__passenger <= 0:
             self.__passenger = 0
-        
