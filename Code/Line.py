@@ -33,6 +33,9 @@ class LineMath:
     Helper class which contains static methods to operate with lines
     """
 
+    def __init__(self):
+        pass
+
     @staticmethod
     def get_perpendicular(a: float, b: float, point: Point2D):
         """

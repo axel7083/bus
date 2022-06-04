@@ -16,9 +16,10 @@ class BusStop(Point2D):
     __nbClient = 0
 
     def __init__(self, name: str, attractivity: int, x: float, y: float):
-        """ The constructors takes 4 parameters
+        """ The constructor takes 4 parameters
         :param name: the name of the bus stop
-        :param attractivity: the attractivity of the bus stop it can have 4 values [0 : Terminus, 1 : Very attractive, 2: Neutral, 3 : Not attractive]
+        :param attractivity: the attractivity of the bus stop it can have 4 values
+            [0 : Terminus, 1 : Very attractive, 2: Neutral, 3 : Not attractive]
         :param x: the parameter inherited from Point2D, the x position of the bus stop on the map
         :param y: the parameter inherited from Point2D, the y position of the bus stop on the map
         """
@@ -56,18 +57,18 @@ class BusStop(Point2D):
         """
         return self.get_x(), self.get_y()
 
-    def set_attractivity(self, newAttractivity: int) -> None:
+    def set_attractivity(self, new_attractivity: int) -> None:
         """ Setter on the parameter __attractivity
-        :param newAttractivity: the new attractivity of the bus stop
+        :param new_attractivity: the new attractivity of the bus stop
         """
-        self.__attractivity = newAttractivity
+        self.__attractivity = new_attractivity
 
-    def add_clients(self, newClients: int) -> None:
+    def add_clients(self, new_clients: int) -> None:
         """ Add clients on the bus stop
-        :param newClients: number of clients to add to the bus stop
+        :param new_clients: number of clients to add to the bus stop
         """
-        assert newClients >= 0
-        self.__nbClient += newClients
+        assert new_clients >= 0
+        self.__nbClient += new_clients
 
     def bus_happens(self, bus: Bus):
         """ Function that handle when a bus arrives on a bus stop
@@ -75,33 +76,35 @@ class BusStop(Point2D):
 
         :param bus: the instance of the bus we have to handle with
         """
-        bus.remove_passenger(self.__weightedrandint(bus.get_passenger(), self.__attractivity))
-        newPassengers = max(self.__nbClient, bus.get_capacity() - bus.get_passenger())
-        bus.add_passenger(newPassengers)
-        self.__nbClient -= newPassengers
+        bus.remove_passenger(self.__weighted_randint(bus.get_passenger(), self.__attractivity))
+        new_passengers = max(self.__nbClient, bus.get_capacity() - bus.get_passenger())
+        bus.add_passenger(new_passengers)
+        self.__nbClient -= new_passengers
 
     @staticmethod
-    def __weightedrandint(max: int, weight: int) -> int:
-        """ This function is a static function that returns a weighted randint based on the weight we gave to it to simulate the person exiting the bus when it arrives.
+    def __weighted_randint(maximum: int, weight: int) -> int:
+        """
+        This function is a static function that returns a weighted randint based on the weight we gave to it to
+        simulate the person exiting the bus when it arrives.
         There is 4 cases with this function :
-            - weight = 0 : it always return the max, everybody is supposed to exit the bus at the terminus
-            - weight = 1 : we sum a certain number of randint to simulate a normal law, and we flip every result that is bigger than the maximum
+            - weight = 0 : it always returns the max, everybody is supposed to exit the bus at the terminus
+            - weight = 1 : we sum a certain number of randint to simulate a normal law,and we flip every result that is bigger than the maximum
             - weight = 2 : we return a randint
-            - weight = 3 : we do the same as for weight = 1 but we substract the result to the max in the goal to invert the result
+            - weight = 3 : we do the same as for weight = 1, but we subtract the result to the max in the goal to invert the result
 
         :return: a weighted random int useful for the function bus_happens 
         """
         if weight == 0:
-            return max
+            return maximum
         elif weight == 1 or weight == 3:
-            sum = 0
-            for _ in range(int(1.6 * max)):
-                sum += randint(0, 1)
-            if sum > max:
-                sum = 2 * max - sum
+            total = 0
+            for _ in range(int(1.6 * maximum)):
+                total += randint(0, 1)
+            if total > maximum:
+                total = 2 * maximum - total
             if weight == 1:
-                return sum
+                return total
             else:
-                return max - sum
+                return maximum - total
         elif weight == 2:
-            return randint(0, max)
+            return randint(0, maximum)

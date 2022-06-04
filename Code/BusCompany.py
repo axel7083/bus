@@ -2,7 +2,8 @@ from .Bus import Bus
 from .BusLine import BusLine
 from typing import List
 
-""" Class that instantiate a bus company that depends on 2 parameters the list of his buslines, and the list of his buses.
+"""
+Class that instantiate a bus company that depends on 2 parameters the list of his buslines, and the list of his buses.
 
 @Author: jmaccou 
 """

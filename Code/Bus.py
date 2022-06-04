@@ -11,12 +11,12 @@ class Bus:
     __speed = 0.
     __passenger = 0
 
-    def __init__(self, newCapa: int) -> None:
+    def __init__(self, new_capa: int) -> None:
         """ Constructor of the bus.
 
-        :param newCapa: the capacity of the bus we want to create.
+        :param new_capa: the capacity of the bus we want to create.
         """
-        self.__maxCapacity = newCapa
+        self.__maxCapacity = new_capa
 
     def __str__(self) -> str:
         """ Create a way to transform the state of the bus into a string.
@@ -45,27 +45,27 @@ class Bus:
         """
         return self.__speed
 
-    def set_speed(self, newSpeed: float) -> None:
+    def set_speed(self, new_speed: float) -> None:
         """ Set a new speed of the bus. It's important as the bus speed varies function of the road it's running on.
 
-        :param newSpeed: the new speed of the bus.
+        :param new_speed: the new speed of the bus.
         """
-        self.__speed = newSpeed
+        self.__speed = new_speed
 
-    def add_passenger(self, nbNewPassengers: int) -> None:
+    def add_passenger(self, nb_new_passengers: int) -> None:
         """ Function that represent the number of passengers that comes in the bus at a bus stop.
 
-        :param nbNewPassenger: the number of passengers to add to the existing passengers in the bus.
+        :param nb_new_passengers: the number of passengers to add to the existing passengers in the bus.
         """
-        self.__passenger += nbNewPassengers
-        if self.__passenger + nbNewPassengers >= self.__maxCapacity:
+        self.__passenger += nb_new_passengers
+        if self.__passenger + nb_new_passengers >= self.__maxCapacity:
             self.__passenger = self.__maxCapacity
 
-    def remove_passenger(self, nbPassengersLeaving: int) -> None:
+    def remove_passenger(self, nb_passengers_leaving: int) -> None:
         """ Function that represent the number of passengers that are leaving the bus at a bus stop.
 
-        :param nbPassengersLeaving: the number of passengers that are leaving the bus.
+        :param nb_passengers_leaving: the number of passengers that are leaving the bus.
         """
-        self.__passenger -= nbPassengersLeaving
+        self.__passenger -= nb_passengers_leaving
         if self.__passenger <= 0:
             self.__passenger = 0
