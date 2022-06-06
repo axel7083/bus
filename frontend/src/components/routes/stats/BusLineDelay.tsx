@@ -6,11 +6,13 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import StatisticsSumUp from "./StatisticsSumUp";
 
+/* This interface will be used to access the element id_line and horraire for a particular line from the JSON file*/
 interface ISimulationResult {
     id_line: number;
     horraire: string[][];
 }
 
+/* This interface will be used to access the number of delays that are critics or acceptable*/
 export interface IDelays {
     critique: number;
     acceptable: number;
@@ -19,7 +21,11 @@ export interface IDelays {
 type props2 = {
     id: number
 }
-
+/**
+ * We create a component for the delays on a bus line. We use a hook to print the value in the JSON files associated (dbResultSimulation)
+ * We search in the JSON file which id is the same as the one wanted.
+ * @param param0
+ */
 const BusLineDelay = ({ id }: props2) => {
     const [simulationResult, setSimulationResult] = useState<ISimulationResult | undefined>();
     let nb_critic_delay = 0;
@@ -27,12 +33,12 @@ const BusLineDelay = ({ id }: props2) => {
     let total_stop = 0;
     var nb_exchange = 0;
     useEffect(() => {
-        console.log("useEffect BusLineDelay");
+        //console.log("useEffect BusLineDelay");
         // Fetch
         fetch('http://localhost:3001/dbResultSimulation.json')
             .then(response => response.json()) // Transform the response in json
             .then(response => {
-                console.log("setSimulationResults:", response);
+//                console.log("setSimulationResults:", response);
                 for (let i = 0; i < response.length; i++) {
                     if (response[i].id_line === id) {
                         setSimulationResult(response[i]);
@@ -46,29 +52,51 @@ const BusLineDelay = ({ id }: props2) => {
                 console.log(error);
             });
     }, [id]);
-    
+
+/**
+* We compare the value between the latest arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
+ * - a critic one (red)
+ * - an acceptable one (green)
+ * - a medium one (orange) 
+ * We put the colors according to the following rules:
+ * - green :  h1 = h2 or h1 + 5 minutes > h2
+ * - orange : h1 + 10 minutes > h2
+ * - red : all other cases
+ * h1 : the expected arrival hour
+ * h2 : the latest arrival hour
+ * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
+*/
     function compareLatestArrival(h1: string, h2: string) {
         total_stop++;
         let minutesH1 = parseInt(h1[3] + h1[4]);
         let heureH1 = parseInt(h1[0] + h1[1]);
         let minutesH2 = parseInt(h2[3] + h2[4]);
         let heureH2 = parseInt(h2[0] + h2[1]);
-
         if (h1 == h2 || minutesH1 + 5 > minutesH2) {
-            return "rgb(39, 247, 136)";
+            return "rgb(39, 247, 136)"; //green
         }
         else if (minutesH1 + 10 > minutesH2) {
             nb_medium_delay++;
-            return "rgb(255,165,0)";
-
+            return "rgb(255,165,0)"; //orange
         }
         else {
             nb_critic_delay++;
-            return "rgb(247,63,39)";
-
+            return "rgb(247,63,39)"; //red
         }
     }
-
+/**
+* We compare the value between the average arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
+ * - a critic one (red)
+ * - an acceptable one (green)
+ * - a medium one (orange)
+ * We put the colors according to the following rules:
+ * - green :  h1 - 1 minute <= h2 <= h1 + 1 minutes
+ * - orange :  h1 - 3 minutes <= h2 <= h1 + 3 minutes
+ * - red : all other cases
+ * h1 : the expected arrival hour
+ * h2 : the latest arrival hour
+ * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
+*/
     function compareAverageArrival(h1: string, h2: string) {
         total_stop++;
         let minutesH1 = parseInt(h1[3] + h1[4]);
@@ -77,18 +105,30 @@ const BusLineDelay = ({ id }: props2) => {
         let heureH2 = parseInt(h2[0] + h2[1]);
 
         if (minutesH2 <= minutesH1 + 1 && minutesH2 >= minutesH1 - 1) {
-            return "rgb(39, 247, 136)";
+            return "rgb(39, 247, 136)"; //green
         }
         else if (minutesH2 <= minutesH1 + 3 && minutesH2 >= minutesH1 - 3) {
             nb_medium_delay++;
-            return "rgb(255,165,0)";
+            return "rgb(255,165,0)"; //orange
         }
         else {
             nb_critic_delay++;
-            return "rgb(247,63,39)";
+            return "rgb(247,63,39)"; //red
         }
     }
-
+/**
+* We compare the value between the earlier arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
+ * - a critic one (red)
+ * - an acceptable one (green)
+ * - a medium one (orange)
+ * We put the colors according to the following rules:
+ * - green :  h2 = h1 
+ * - orange :  h2 < h1
+ * - red : h2 > h1
+ * h1 : the expected arrival hour
+ * h2 : the latest arrival hour
+ * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
+*/
     function compareEarlierArrival(h1: string, h2: string) {
         total_stop++;
         if (h2 < h1) {

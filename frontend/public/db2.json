@@ -1,0 +1,178 @@
+[
+  {
+    "id": 1,
+    "name": "Accacia",
+    "exchange": [ "L2 " ],
+    "id_line": 1
+  },
+
+  {
+    "id": 2,
+    "name": "Lauriane",
+    "id_line": 1
+  },
+  {
+    "id": 3,
+    "name": "Av. de l'Europe",
+    "exchange": [ "L3 " ],
+    "id_line": 1
+  },
+  {
+    "id": 4,
+    "name": "CFA",
+    "exchange": [ "L2 " ],
+    "id_line": 1
+  },
+  {
+    "id": 5,
+    "name": "Mairie",
+    "exchange": [ "L2 ", "L3" ],
+    "id_line": 1
+  },
+  {
+    "id": 6,
+    "name": "Gare TGV",
+    "exchange": [ "L1 ", "L6 " ],
+    "id_line": 1
+  },
+  {
+    "id": 7,
+    "name": "Ile de versaille",
+    "id_line": 1
+  },
+  {
+    "id": 8,
+    "name": "UTBM",
+    "exchange": [ "L2 ", "L8" ],
+    "id_line": 1
+  },
+  {
+    "id": 9,
+    "name": "IUT",
+    "id_line": 1
+  },
+
+
+
+  {
+    "name": "Louis Aragon",
+    "exchange": [ "L1 ", "L7 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Av. de l'Europe ",
+    "exchange": [ "L1 ", "L8 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Sources Mesdames",
+    "exchange": [ "L2 ", "L9 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Av. de la paix",
+    "id_line": 2
+  },
+  {
+    "name": "Place de la resistance",
+    "id_line": 2
+  },
+  {
+    "name": "Casino",
+    "exchange": [ "L2 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Cinema",
+    "exchange": [ "L2 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Lycee FulBert",
+    "exchange": [ "L2 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Hopital",
+    "exchange": [ "L2 " ],
+    "id_line": 2
+  },
+  {
+    "name": "Lion de Belfort",
+    "exchange": [ "L1 " ],
+    "id_line": 3
+  },
+  {
+    "name": "Geroge Pompidou",
+    "exchange": [ "L3 " ],
+    "id_line": 3
+  },
+  {
+    "name": "Jean Paul Sartes",
+    "id_line": 3
+  },
+  {
+    "name": "Place du capitole",
+    "id_line": 3
+  },
+  {
+    "name": "JSPlus moi",
+    "id_line": 3
+  },
+  {
+    "name": "Valdoie Mairie",
+    "id_line": 4
+  },
+  {
+    "name": "1re Armee",
+    "id_line": 4
+  },
+  {
+    "name": "Marche Vosges",
+    "id_line": 4
+  },
+  {
+    "name": "Strasbourg",
+    "id_line": 4
+  },
+  {
+    "name": "Jean Jaures",
+    "id_line": 4
+  },
+  {
+    "name": "Clemenceau",
+    "id_line": 4
+  },
+  {
+    "name": "Republique",
+    "id_line": 4
+  },
+  {
+    "name": "Foch",
+    "id_line": 4
+  },
+  {
+    "name": "Denfert Rochereau",
+    "id_line": 4
+  },
+  {
+    "name": "Gare",
+    "id_line": 4
+  },
+  {
+    "name": "Liberte Madrid",
+    "id_line": 4
+  },
+  {
+    "name": "Schuman",
+    "id_line": 4
+  },
+  {
+    "name": "Signoret",
+    "id_line": 4
+  },
+  {
+    "name": "La Douce",
+    "id_line": 4
+  }
+] 

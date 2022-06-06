@@ -1,70 +1,95 @@
 import Container from "react-bootstrap/Container";
-import {useEffect, useState} from "react";
-import {Table} from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import "./Ajout.css";
+import BusLineRepresentation from "./BusLineRepresentation";
+import React, { useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import BusLineDelay from "./BusLineDelay";
+import { useEffect } from "react";
 
-
-const Stats = () => {
-
-    const [loading, setLoading] = useState<boolean>(false);
-
-    const [dataSet, setDataSet] = useState<number[]>([]);
-    const [ip, setIp] = useState<string>("");
-
+interface ISimulationR {
+    id_line: number;
+    name: string;
+}
+interface ILine {
+    name: string;
+    id: string;
+}
+/*
+ Stats is used to create all the components needed to show the performance of a particular line. 
+ We will create a dynamic select that will give the user the possibility to show the statistics for a line.
+ Then, we will show the delays that we have calculated with the back end that are saved in a JSON file.
+ Finally, we will show a small representation of a line.
+ */
+const Stats = () => {    
+    /*
+     * The hook for lines and setLines will be used to create the select component with all the lines we have in the JSON file.
+     * The second hook with busLineId and setBusLineId will be used to give as a parameter to the other components that are created dynamically
+     * (BusLineRepresentation & BusLineDelay) the id of the line we want to print information about.
+     */
+    const [lines, setLines] = useState<ILine[]>([]);
+    const [busLineId, setBusLineId] = useState(0); //1
+/*
+ * The useEffect allows us to have information about the line in the JSON file called dbResultSimulation.
+ * Once we have it, we will only use the id (value.id_line) and the name of the line (value.name).
+ * If there is any error, we print it.
+ */
     useEffect(() => {
-
-        if(loading)
-            return;
-
-        setLoading(true);
-
-        // Fetch
-        fetch('https://get.geojs.io/v1/ip.json')
+        //console.log("useEffect Stats");
+        fetch('http://localhost:3001/dbResultSimulation.json')
             .then(response => response.json()) // Transform the response in json
             .then(response => {
-                console.log("RESPONSE:");
-                console.log(response);
-
-                const res = [4,5,6,7,8,9,4,5,41,55]
-
-                setDataSet(res);
-                setIp(response.ip);
+                //console.log("Reponse:", response);
+                setLines((response as ISimulationR[]).map((value => {
+                    return { id: `${value.id_line}`, name: `${value.name}` };
+                })));
             })
             .catch(error => {
                 console.log("error:");
                 console.log(error);
             });
-    })
-
-    //https://react-bootstrap.github.io/components/alerts
+    }, []);
+/*
+* We return a container with a title, a select with the value read and 
+ * we call the components BusLineDelay and BusLineRepresentation.
+ * To have a proper display, we use <Col> and <Row>
+*/
     return (
         <Container>
-            <div>Stats</div>
-
-            {ip}
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>value</th>
-                </tr>
-                </thead>
-                <tbody>
-                {dataSet.map((value, index) => {
+            <br></br>
+            <h2>Evaluation of the <b>delays</b> in minutes</h2>
+            <br></br>
+            <Form.Select aria-label="Default select example" onChange={(e) => {
+                    console.log("[Stats] Form onChange", e.target.value);
+                    setBusLineId(Number(e.target.value));
+                }}>
+                <option key="0" value ="0">Choose a line</option>
+                {lines.map((value, index) => {
                     return (
-                        <tr key={index}>
-                            <td>{index}</td>
-                            <td>{value}</td>
-                        </tr>
-                    )
-                })}
-
-                </tbody>
-            </Table>
-
-
-
+                        <option key={index} value={value.id}>{value.name}</option>)
+                    })}
+            </Form.Select>
+            <br></br>
+            <h5>Data obtained for Line1</h5>
+            <Row className="ContainerStatOneLine">
+                <Col>
+                <Row className="color">
+                    <BusLineDelay
+                        id={busLineId}
+                    ></BusLineDelay>
+                </Row>
+                </Col>
+                <Col xs={3} >
+                <Row className="color">
+                    <Col>
+                        <BusLineRepresentation
+                            id={busLineId}
+                        ></BusLineRepresentation>
+                    </Col>
+                </Row>
+            </Col>
+            </Row>
         </Container>
     )
 }
-
 export default Stats;
