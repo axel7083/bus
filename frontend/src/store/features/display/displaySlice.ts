@@ -9,15 +9,7 @@ export interface DisplayState {
 
 const initialState: DisplayState = {
   value: {
-    layers: [
-      {
-        markers: [{pos: {lat: 47.64795, lng: 6.85469}, color: "d51717", id: -1}],
-        name:"layer_default",
-        displayed: true,
-        polylines: [],
-        id: "aaa",
-      },
-    ]
+    layers: []
   },
 };
 
@@ -38,6 +30,7 @@ export const displaySlice = createSlice({
       state.value = copy;
     },
     updateOrAddLayer: (state,  action: PayloadAction<ILayer>) => {
+      console.log(action.payload)
       const copy = {...state.value};
       let index = -1;
       for(let i = 0;  i < copy.layers.length; i++) {

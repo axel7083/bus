@@ -19,11 +19,9 @@ headers = {
 
 def query_features(lat, long, dist = 10.0):
   payload = {
-    'data': f'[timeout:10][out:json];(node(around:{dist},{lat},{long});way(around:{dist},{lat},{long}););out tags geom({lat-lat*0.001},{long-long*0.001},{lat+lat*0.001},{long+long*0.001});'
+    'data': f'[timeout:10][out:json];(way["highway"~"motorway|trunk|primary|secondary|tertiary|residential|unclassified"](around:{dist},{lat},{long})->.w1;node(w.w1););out;'
   }
-  print(payload)
   response = requests.request("POST", url, headers=headers, data=payload)
-  print(response.text)
   return response.text
 
 
@@ -34,4 +32,12 @@ def get_ways(node_id: str):
 
 def get_nodes(way_id: str):
   response = requests.request("GET", f'https://www.openstreetmap.org/api/0.6/way/{way_id}/full.json', headers=headers)
+  return response.text
+
+
+def get_node_geom(node_ids: [str]):
+  payload = {
+    'data': f'[timeout:10][out:json];node(id:{",".join(node_ids)});way["highway"~"motorway|trunk|primary|secondary|tertiary|residential|unclassified"](bn);out geom;'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload)
   return response.text

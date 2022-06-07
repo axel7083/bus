@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
-import "./Ajout.css";
+import {Card, Table} from "react-bootstrap";
+//import "./Ajout.css";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import StatisticsSumUp from "./StatisticsSumUp";
@@ -35,7 +35,7 @@ const BusLineDelay = ({ id }: props2) => {
     useEffect(() => {
         //console.log("useEffect BusLineDelay");
         // Fetch
-        fetch('http://localhost:3001/dbResultSimulation.json')
+        fetch('http://localhost:3000/dbResultSimulation.json')
             .then(response => response.json()) // Transform the response in json
             .then(response => {
 //                console.log("setSimulationResults:", response);
@@ -45,7 +45,7 @@ const BusLineDelay = ({ id }: props2) => {
                         break;
                     }
                 }
-                
+
             })
             .catch(error => {
                 console.log("error:");
@@ -53,19 +53,19 @@ const BusLineDelay = ({ id }: props2) => {
             });
     }, [id]);
 
-/**
-* We compare the value between the latest arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
- * - a critic one (red)
- * - an acceptable one (green)
- * - a medium one (orange) 
- * We put the colors according to the following rules:
- * - green :  h1 = h2 or h1 + 5 minutes > h2
- * - orange : h1 + 10 minutes > h2
- * - red : all other cases
- * h1 : the expected arrival hour
- * h2 : the latest arrival hour
- * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
-*/
+    /**
+     * We compare the value between the latest arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
+     * - a critic one (red)
+     * - an acceptable one (green)
+     * - a medium one (orange)
+     * We put the colors according to the following rules:
+     * - green :  h1 = h2 or h1 + 5 minutes > h2
+     * - orange : h1 + 10 minutes > h2
+     * - red : all other cases
+     * h1 : the expected arrival hour
+     * h2 : the latest arrival hour
+     * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
+     */
     function compareLatestArrival(h1: string, h2: string) {
         total_stop++;
         let minutesH1 = parseInt(h1[3] + h1[4]);
@@ -84,19 +84,19 @@ const BusLineDelay = ({ id }: props2) => {
             return "rgb(247,63,39)"; //red
         }
     }
-/**
-* We compare the value between the average arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
- * - a critic one (red)
- * - an acceptable one (green)
- * - a medium one (orange)
- * We put the colors according to the following rules:
- * - green :  h1 - 1 minute <= h2 <= h1 + 1 minutes
- * - orange :  h1 - 3 minutes <= h2 <= h1 + 3 minutes
- * - red : all other cases
- * h1 : the expected arrival hour
- * h2 : the latest arrival hour
- * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
-*/
+    /**
+     * We compare the value between the average arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
+     * - a critic one (red)
+     * - an acceptable one (green)
+     * - a medium one (orange)
+     * We put the colors according to the following rules:
+     * - green :  h1 - 1 minute <= h2 <= h1 + 1 minutes
+     * - orange :  h1 - 3 minutes <= h2 <= h1 + 3 minutes
+     * - red : all other cases
+     * h1 : the expected arrival hour
+     * h2 : the latest arrival hour
+     * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
+     */
     function compareAverageArrival(h1: string, h2: string) {
         total_stop++;
         let minutesH1 = parseInt(h1[3] + h1[4]);
@@ -116,26 +116,26 @@ const BusLineDelay = ({ id }: props2) => {
             return "rgb(247,63,39)"; //red
         }
     }
-/**
-* We compare the value between the earlier arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
- * - a critic one (red)
- * - an acceptable one (green)
- * - a medium one (orange)
- * We put the colors according to the following rules:
- * - green :  h2 = h1 
- * - orange :  h2 < h1
- * - red : h2 > h1
- * h1 : the expected arrival hour
- * h2 : the latest arrival hour
- * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
-*/
+    /**
+     * We compare the value between the earlier arrival schedule (h2) and the expected arrival schedule(h1) to know if the delay is
+     * - a critic one (red)
+     * - an acceptable one (green)
+     * - a medium one (orange)
+     * We put the colors according to the following rules:
+     * - green :  h2 = h1
+     * - orange :  h2 < h1
+     * - red : h2 > h1
+     * h1 : the expected arrival hour
+     * h2 : the latest arrival hour
+     * With add one to each of the counter according to the color obtained (green: acceptable; red: critics; orange : medium)
+     */
     function compareEarlierArrival(h1: string, h2: string) {
         total_stop++;
         if (h2 < h1) {
             nb_medium_delay++;
             return "rgb(255,165,0)";
         }
-        else if (h2 > h1) {           
+        else if (h2 > h1) {
             nb_critic_delay++;
             return "rgb(247,63,39)";
         }
@@ -144,13 +144,13 @@ const BusLineDelay = ({ id }: props2) => {
         }
     }
     return (
-        <Container>
-            <br></br>
-            <Row className="ContainerStatOneLine">
-                <Col>
-                    <Row className="color">
-                        <Table striped bordered hover>
-                            <thead>
+        <Row>
+            <Col>
+                <Card>
+                    <Row>
+                        <Col>
+                            <Table striped bordered hover>
+                                <thead>
                                 <tr>
                                     <th></th>
                                     <th>Expected time</th>
@@ -159,31 +159,35 @@ const BusLineDelay = ({ id }: props2) => {
                                     <th>Average arrival</th>
                                     <th>Delays Counts</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {simulationResult?.horraire.map((value, index) => {  
-                                return (
+                                </thead>
+                                <tbody>
+                                {simulationResult?.horraire.map((value, index) => {
+                                    return (
                                         <tr key={ index }>
-                                        <th>{value[0]}</th>
+                                            <th>{value[0]}</th>
                                             <td>{value[1]}</td>
                                             <td style={{ backgroundColor: compareEarlierArrival(value[1], value[2]) } }>{value[2]}</td>
                                             <td style={{ backgroundColor: compareLatestArrival(value[1],value[3]) }}>{value[3]}</td>
                                             <td style={{ backgroundColor: compareAverageArrival(value[1], value[4]) }}>{value[4]}</td>
                                             <td style={{ backgroundColor: (parseInt(value[5]) <= 2) ? "rgb(39, 247, 136)" : (parseInt(value[5]) <= 5) ? "rgb(255,165,0)" : "rgb(247,63,39)" }}>{value[5]}</td>
                                         </tr>
-                                        )
+                                    )
                                 })}
-                            </tbody>
-                        </Table>
+                                </tbody>
+                            </Table>
+                        </Col>
                     </Row>
+                </Card>
+                <Card className={"mt-4"}>
                     <StatisticsSumUp
                         nbCriticDelay={nb_critic_delay}
                         nbMediumDelay={nb_medium_delay}
                         nbSchedule={total_stop}
-                    ></StatisticsSumUp>
-                </Col>
-            </Row>
-        </Container>
+                    />
+                </Card>
+            </Col>
+        </Row>
+
     )
- }
+}
 export default React.memo(BusLineDelay);

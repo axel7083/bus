@@ -39,9 +39,11 @@ allowed = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential
 def explorer_node():
     node_id = request.args.get("node_id", default="0", type=str)
     ways = json.loads(get_ways(node_id))['elements']
-    output = {}
-    for way in ways:
+    output = {"geometries": {}}
 
+    all_nodes = []
+
+    for way in ways:
         if 'tags' not in way:
             continue
 
@@ -51,18 +53,35 @@ def explorer_node():
         nodes = [elem for elem in json.loads(get_nodes(way['id']))['elements'] if elem['type'] == "node"]
         geometry = {}
         for node in nodes:
+            all_nodes.append(f'{node["id"]}')
             geometry[node['id']] = {
                 'lat': node['lat'],
                 'lon': node['lon'],
                 'index': way['nodes'].index(node['id']),
             }
 
-        output[way['id']] = {
+        output["geometries"][way['id']] = {
             'name': (way['tags']['name'] if 'name' in way['tags'] else "unknown"),
             'geometry': geometry
         }
 
-    return output
+    nodes_meta = {}
+    payload = get_node_geom(all_nodes)
+
+    try:
+        elements = json.loads(payload)['elements']
+        for element in elements:
+            assert element['type'] == "way"
+            for node in element['nodes']:
+                if node not in nodes_meta:
+                    nodes_meta[node] = [element['id']]
+                else:
+                    nodes_meta[node].append(element['id'])
+    except ValueError as e:
+        print(e)
+
+    output['nodes_meta'] = nodes_meta
+    return json.dumps(output)
 
 
 if __name__ == '__main__':

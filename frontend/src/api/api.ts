@@ -1,4 +1,4 @@
-import {LatLng, LatLngLiteral} from "leaflet";
+import {LatLng, LatLngExpression, LatLngLiteral} from "leaflet";
 import Way, {isBusCompatible} from "./models/Way";
 
 
@@ -7,29 +7,33 @@ type node_dict = {[id: number]: LatLngLiteral};
 
 type node = {lat: number, lon: number, ways: number, index: number}
 export type geometry = {[id: string]: node}
-type INodeExplorer = {[id: string]: {geometry: geometry, name: string}}
+type INodeExplorer = {geometries: { [id: string]: { geometry: geometry, name: string } }, nodes_meta: {[id: string]: string[]}}
 
+export type INodeDict = {[id: string]: LatLngExpression};
 /**
  * This class defines a simple api for fetching and receiving data about OpenStreet map
  */
 class Api {
 
     // From a position get all the ways, and nodes nearby
-    static query_features = (latLng: LatLng, callback: (d: Way[]) => void)  => {
+    static find_nodes = (latLng: LatLng, callback: (e: INodeDict) => void, onError: () => void)  => {
         console.log("query_features");
         fetch(`http://127.0.0.1:5000/explore?lat=${latLng.lat}&lon=${latLng.lng}`)
             .then(response => response.json())
             .then(response => {
-
-                const ways: Way[] = [];
+                console.log(response);
+                const nodes_pos: INodeDict = {}
                 for (let i = 0; i < response.elements.length; i++) {
-                    const w = Way.from_request_query_features(response.elements[i]);
-                    if(w)
-                        ways.push(w);
+                    if(response.elements[i]['type'] === 'node') {
+                        const node = response.elements[i] as {'id': number, 'lat': number, 'lon': number};
+                        nodes_pos[`${node.id}`] = {lat: node.lat, lng: node.lon};
+                    }
                 }
-                callback(ways);
+                callback(nodes_pos);
             })
             .catch(error => {
+                console.log("ERROR");
+                onError();
                 console.log(error);
             });
     }

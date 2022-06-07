@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import "./Ajout.css";
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Card } from "react-bootstrap";
 
 /*
  In order to create this component, I need some informations about the number of
@@ -22,9 +22,12 @@ type props2 = {
  */
 const StatisticsSumUp = ({ nbCriticDelay, nbMediumDelay, nbSchedule }: props2) => {
     return (
-        <Row className="color">
-            <Col className="color">
-                <h4>Statistics</h4>
+        <>
+
+            <Card.Body>
+                <Card.Title>
+                    Statistics
+                </Card.Title>
                 <Container>
                     <Row>
                         <Col className="nbBusDiv"><p>Bus</p>(TBD)</Col>
@@ -35,8 +38,8 @@ const StatisticsSumUp = ({ nbCriticDelay, nbMediumDelay, nbSchedule }: props2) =
                         <Col className="nbAcceptableDiv"><p>Acceptable</p>{(nbSchedule) - nbMediumDelay - nbCriticDelay}<p>{(((nbSchedule) - nbMediumDelay - nbCriticDelay) * 100 / (nbSchedule)).toFixed(2)}%</p></Col>
                     </Row>
                 </Container>
-            </Col>
-        </Row>
+            </Card.Body>
+        </>
     )
 };
     export default StatisticsSumUp;

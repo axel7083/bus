@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import {useEffect, useState} from "react";
-import {Table} from "react-bootstrap";
-import "./Ajout.css"
+import {Card, Table} from "react-bootstrap";
+//import "./Ajout.css"
 
 type props = {
     id: number
@@ -19,7 +19,7 @@ const BusLineRepresentation = ({ id }: props) => {
      * We use useEffect to read the JSON file and if there is any error, we print it
      */
     useEffect(() => {
-        fetch('http://localhost:3001/db2.json') //Pay attention to the localhost number
+        fetch('http://localhost:3000/db2.json') //Pay attention to the localhost number
             .then(response => response.json()) // Transform the response in json
             .then(response => {
                 //console.log("RESPONSE:", response);
@@ -35,7 +35,7 @@ const BusLineRepresentation = ({ id }: props) => {
      In the return part, we create a container with a list constaining the name of the stop and their exchanges points
      */
     return (
-        <Container>
+        <Card>
             <br></br>
             <h2>L1<small>Debitus - Terminus</small></h2>
                 <ul className="line">
@@ -56,7 +56,7 @@ const BusLineRepresentation = ({ id }: props) => {
                 })}
                     <li className="BusLineEnd"><strong>Terminus</strong> </li>
                 </ul>
-        </Container>
+        </Card>
     )
 }
 /*We export the component we have created*/
