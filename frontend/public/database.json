@@ -1,0 +1,32 @@
+
+{
+  "AllStop": {
+    "Line1": {
+      "S1": {
+        "nameStop": "Stop 0",
+        "subStop": [
+          "L5",
+          "L6"
+        ]
+      }
+    },
+    "Line2": {
+      "S1": {
+        "nameStop": "Stop 1",
+        "subStop": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ]
+      },
+      "S2": {
+        "nameStop": "Stop 2",
+        "subStop": [
+          "L5",
+          "L8"
+        ]
+      }
+    }
+  }
+}
