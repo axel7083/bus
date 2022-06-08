@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import {Card, Col, Row} from "react-bootstrap";
 import BusLineDelay from "./BusLineDelay";
 import { useEffect } from "react";
+import {useAppSelector} from "../../../store/hooks";
+import {selectBusLines} from "../../../store/features/busLines/busLinesSlice";
 
 interface ISimulationR {
     id_line: number;
@@ -21,33 +23,11 @@ interface ILine {
  Finally, we will show a small representation of a line.
  */
 const Stats = () => {
-    /*
-     * The hook for lines and setLines will be used to create the select component with all the lines we have in the JSON file.
-     * The second hook with busLineId and setBusLineId will be used to give as a parameter to the other components that are created dynamically
-     * (BusLineRepresentation & BusLineDelay) the id of the line we want to print information about.
-     */
-    const [lines, setLines] = useState<ILine[]>([]);
-    const [busLineId, setBusLineId] = useState<number | undefined>(undefined); //1
-    /*
-     * The useEffect allows us to have information about the line in the JSON file called dbResultSimulation.
-     * Once we have it, we will only use the id (value.id_line) and the name of the line (value.name).
-     * If there is any error, we print it.
-     */
-    useEffect(() => {
-        //console.log("useEffect Stats");
-        fetch('http://localhost:3000/dbResultSimulation.json')
-            .then(response => response.json()) // Transform the response in json
-            .then(response => {
-                //console.log("Reponse:", response);
-                setLines((response as ISimulationR[]).map((value => {
-                    return { id: `${value.id_line}`, name: `${value.name}` };
-                })));
-            })
-            .catch(error => {
-                console.log("error:");
-                console.log(error);
-            });
-    }, []);
+
+    const busLines = useAppSelector(selectBusLines);
+
+    const [busLineId, setBusLineId] = useState<string | undefined>(undefined);
+
     /*
     * We return a container with a title, a select with the value read and
      * we call the components BusLineDelay and BusLineRepresentation.
@@ -66,10 +46,13 @@ const Stats = () => {
                             aria-label="Default select example"
                             onChange={(e) => {
                                 console.log("[Stats] Form onChange", e.target.value);
-                                setBusLineId(Number(e.target.value));
+                                if(Number(e.target.value) === 0)
+                                    setBusLineId(undefined)
+                                else
+                                    setBusLineId(e.target.value);
                             }}>
                             <option key="0" value ="0">Choose a line</option>
-                            {lines.map((value, index) => {
+                            {busLines.map((value, index) => {
                                 return (
                                     <option key={index} value={value.id}>{value.name}</option>)
                             })}

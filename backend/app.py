@@ -3,6 +3,8 @@ from osm import *
 from flask_cors import CORS
 import json
 
+from utils.time import simulateLine
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
@@ -32,8 +34,14 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
-allowed = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "unclassified"]
+@app.route('/stats', methods=['POST'])
+def stats_line():
+    data = request.get_json()
+    print(data)
+    return simulateLine(data)
 
+
+allowed = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "unclassified"]
 
 @app.route('/explorer_node', methods=['GET'])
 def explorer_node():

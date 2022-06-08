@@ -5,6 +5,11 @@ import {Card, Table} from "react-bootstrap";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import StatisticsSumUp from "./StatisticsSumUp";
+import {IBusLine} from "../../../utils/interface/IBusLine";
+import {useAppSelector} from "../../../store/hooks";
+import {selectBusLineById} from "../../../store/features/busLines/busLinesSlice";
+import {latLng} from "leaflet";
+import {timeFromInt} from "time-number";
 
 /* This interface will be used to access the element id_line and horraire for a particular line from the JSON file*/
 interface ISimulationResult {
@@ -19,7 +24,7 @@ export interface IDelays {
 }
 
 type props2 = {
-    id: number
+    id: string
 }
 /**
  * We create a component for the delays on a bus line. We use a hook to print the value in the JSON files associated (dbResultSimulation)
@@ -27,6 +32,10 @@ type props2 = {
  * @param param0
  */
 const BusLineDelay = ({ id }: props2) => {
+
+    const busLine: IBusLine = useAppSelector((state) => selectBusLineById(state, id))!;
+
+
     const [simulationResult, setSimulationResult] = useState<ISimulationResult | undefined>();
     let nb_critic_delay = 0;
     let nb_medium_delay = 0;
@@ -35,17 +44,19 @@ const BusLineDelay = ({ id }: props2) => {
     useEffect(() => {
         //console.log("useEffect BusLineDelay");
         // Fetch
-        fetch('http://localhost:3000/dbResultSimulation.json')
+        fetch('http://localhost:5000/stats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({id_line: busLine.id, name: busLine.name, horraire: busLine.busStops.map((stop) => {
+                return {long: latLng(stop.position).lng, lat: latLng(stop.position).lat, name: stop.name, hours: timeFromInt(Number(stop.schedule))}
+                })}),
+        })
             .then(response => response.json()) // Transform the response in json
             .then(response => {
-//                console.log("setSimulationResults:", response);
-                for (let i = 0; i < response.length; i++) {
-                    if (response[i].id_line === id) {
-                        setSimulationResult(response[i]);
-                        break;
-                    }
-                }
-
+                console.log("setSimulationResult:", response);
+                setSimulationResult(response);
             })
             .catch(error => {
                 console.log("error:");
