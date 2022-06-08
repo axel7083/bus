@@ -1,6 +1,5 @@
 import Container from "react-bootstrap/Container";
 import { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 
