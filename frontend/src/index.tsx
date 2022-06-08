@@ -18,6 +18,7 @@ import Stats from "./components/routes/stats/Stats";
 // The project is using bootstrap for the css
 // See more https://react-bootstrap.github.io/
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Dashboard from "./components/routes/dashboard/dashboard";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -33,6 +34,7 @@ root.render(
                   <Route path="/" element={<div>Nothing here</div>} />
                   <Route path="/map" element={<Map/>} />
                   <Route path="/stats" element={<Stats/>} />
+                  <Route path="/dashboard" element={<Dashboard/>} />
               </Routes>
           </Router>
       </Provider>
