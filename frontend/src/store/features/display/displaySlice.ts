@@ -13,15 +13,20 @@ const initialState: DisplayState = {
   },
 };
 
+export interface VisibilityPayload {
+  layer: number,
+  value: boolean
+}
+
 export const displaySlice = createSlice({
   name: 'display',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    toggleLayerVisibility: (state,  action: PayloadAction<number>) => {
-      console.log("toggleLayerVisibility");
+    setVisibility: (state,  action: PayloadAction<VisibilityPayload>) => {
+      console.log("setVisibility");
       const copy = {...state.value};
-      copy.layers[action.payload].displayed = !copy.layers[action.payload].displayed;
+      copy.layers[action.payload.layer].displayed = action.payload.value;
       state.value = copy;
     },
     addLayer: (state,  action: PayloadAction<ILayer>) => {
@@ -53,7 +58,7 @@ export const displaySlice = createSlice({
   },
 });
 
-export const { toggleLayerVisibility, addLayer, updateOrAddLayer } = displaySlice.actions;
+export const { setVisibility, addLayer, updateOrAddLayer } = displaySlice.actions;
 
 export const selectDisplay = (state: RootState) => state.display.value;
 

@@ -1,7 +1,7 @@
 from flask import Flask, request
 
-from backend.models.Line import Line
-from backend.models.Point2D import Point2D
+from models.Line import Line
+from models.Point2D import Point2D
 from osm import *
 from flask_cors import CORS
 import json

@@ -109,8 +109,6 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        console.log("useEffect busLine");
-
         const bounds = [];
         for (let i = 0; i < busLine.path.length - 1; i++) {
             const bound = createExternalMiddle(busLine.path[i], busLine.path[i+1]);
@@ -147,7 +145,7 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
                         position: position,
                         id: v4(),
                         name: "",
-                        schedule: "",
+                        schedule: 0,
                         previousNodeId: bounds[i].previous,
                         nextNodeId: bounds[i].next,
                     }]
@@ -161,8 +159,8 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
     return (
         <Row>
             <Col>
-                <h3>BusLineStopsEditorComponent</h3>
-                {busLine.busStops.map((value, index) => {
+                <h4>Bus line stops</h4>
+                {busLine.busStops.map((value, index, array) => {
 
                     return (
                         <InputGroup className="mb-3">
@@ -177,17 +175,21 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
                                     busStops: busStopsCopy
                                 }));
                             }} />
-                            <ReactTimePicker onChange={(e: string) => {
-                                const busStopsCopy = [...busLine.busStops];
-                                const busStop = {...busStopsCopy[index]}
-                                busStop.schedule = e;
-                                busStopsCopy[index] = busStop;
+                            <ReactTimePicker
+                                onChange={(e: string) => {
+                                    const busStopsCopy = [...busLine.busStops];
+                                    const busStop = {...busStopsCopy[index]}
+                                    busStop.schedule = Number(e);
+                                    busStopsCopy[index] = busStop;
 
-                                dispatch(update({
-                                    ...busLine,
-                                    busStops: busStopsCopy
-                                }));
-                            }} value={value.schedule}/>
+                                    dispatch(update({
+                                        ...busLine,
+                                        busStops: busStopsCopy
+                                    }));
+                                }}
+                                value={value.schedule}
+                                previous={(index>0)?timeFromInt(array[index-1].schedule+5*60):"00:00"}
+                            />
                             <Button variant="danger" onClick={(e) => {
                                 const busStopsCopy = [...busLine.busStops];
                                 busStopsCopy.splice(index, 1);
