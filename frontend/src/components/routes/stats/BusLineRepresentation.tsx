@@ -21,7 +21,7 @@ const BusLineRepresentation = ({ id }: props) => {
      In the return part, we create a container with a list constaining the name of the stop and their exchanges points
      */
     return (
-        <Card>
+        <Card style={{borderRadius: "10px"}}>
             <br></br>
             <h2>L1<small>Debitus - Terminus</small></h2>
                 <ul className="line">

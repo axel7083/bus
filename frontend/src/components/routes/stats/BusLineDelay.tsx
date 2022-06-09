@@ -171,9 +171,9 @@ const BusLineDelay = ({ id }: props2) => {
     return (
         <Row>
             <Col>
-                <Card>
+                <Card style={{borderRadius: "10px"}}>
                     <Row>
-                        <Col>
+                        <Col style={{padding: "30px"}}>
                             <Table striped bordered hover>
                                 <thead>
                                 <tr>
@@ -203,7 +203,7 @@ const BusLineDelay = ({ id }: props2) => {
                         </Col>
                     </Row>
                 </Card>
-                <Card className={"mt-4"}>
+                <Card className={"mt-4"} style={{borderRadius: "10px"}}>
                     <StatisticsSumUp
                         nbCriticDelay={nb_critic_delay}
                         nbMediumDelay={nb_medium_delay}
