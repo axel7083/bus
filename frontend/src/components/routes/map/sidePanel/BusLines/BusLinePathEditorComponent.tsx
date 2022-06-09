@@ -256,6 +256,21 @@ const BusLinePathEditorComponent = ({id, setBusy}: {id: string, setBusy: (d: boo
         setState('editing');
     }
 
+    const computeDistance = () => {
+
+        if(busLine.path.length === 0)
+            return 0;
+
+        if(busLine.path.length === 1)
+            return 0;
+
+        let distance = 0;
+        for (let i = 0; i < busLine.path.length - 1; i++) {
+            distance += latLng(busLine.path[i].pos).distanceTo(busLine.path[i +1].pos);
+        }
+        return distance;
+    }
+
     const chooseComponent = () => {
         switch (state) {
             case 'querying-features':
@@ -314,7 +329,7 @@ const BusLinePathEditorComponent = ({id, setBusy}: {id: string, setBusy: (d: boo
                                     Current distance
                                 </Col>
                                 <Col>
-                                    TODO: compute it
+                                    {computeDistance().toFixed(2)} meters
                                 </Col>
                             </Row>
                             <Row className={"mt-4"}>
@@ -361,9 +376,6 @@ const BusLinePathEditorComponent = ({id, setBusy}: {id: string, setBusy: (d: boo
             <Row>
                 <Col>
                     <h4>Bus line path</h4>
-                </Col>
-                <Col>
-                    (Help button here)
                 </Col>
             </Row>
             {chooseComponent()}

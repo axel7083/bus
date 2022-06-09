@@ -31,7 +31,7 @@ root.render(
           <Router>
               <Header/>
               <Routes>
-                  <Route path="/" element={<div>Nothing here</div>} />
+                  <Route path="/" element={<Map/>} />
                   <Route path="/map" element={<Map/>} />
                   <Route path="/stats" element={<Stats/>} />
                   <Route path="/dashboard" element={<Dashboard/>} />
