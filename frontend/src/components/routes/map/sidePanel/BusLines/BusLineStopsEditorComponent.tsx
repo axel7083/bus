@@ -138,14 +138,20 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
     useEffect(() => {
         for (let i = 0; i < bounds.length; i++) {
             if(contains(bounds[i], latLng(position))) {
-                console.log("")
+                // creating a new stop
+
+                let schedule = 0;
+                if(busLine.busStops.length > 0) {
+                    schedule = busLine.busStops[busLine.busStops.length - 1].schedule + 5*60;
+                }
+
                 dispatch(update({
                     ...busLine,
                     busStops: [...busLine.busStops, {
                         position: position,
                         id: v4(),
                         name: "",
-                        schedule: 0,
+                        schedule: schedule,
                         previousNodeId: bounds[i].previous,
                         nextNodeId: bounds[i].next,
                     }]
@@ -188,7 +194,6 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
                                     }));
                                 }}
                                 value={value.schedule}
-                                previous={(index>0)?timeFromInt(array[index-1].schedule+5*60):"00:00"}
                             />
                             <Button variant="danger" onClick={(e) => {
                                 const busStopsCopy = [...busLine.busStops];

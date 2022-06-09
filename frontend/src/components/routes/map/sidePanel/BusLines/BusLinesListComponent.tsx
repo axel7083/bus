@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../../../../store/hooks";
-import {add, selectBusLines} from "../../../../../store/features/busLines/busLinesSlice";
+import {add, deleteBusLine, selectBusLines} from "../../../../../store/features/busLines/busLinesSlice";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,6 +8,7 @@ import {IBusLine} from "../../../../../utils/interface/IBusLine";
 import {v4} from "uuid";
 import {useEffect} from "react";
 import {
+    deleteLayer,
     selectDisplay,
     setVisibility,
     updateOrAddLayer
@@ -32,6 +33,18 @@ const BusLinesListComponent = ({onEditLine}: {onEditLine: (d: IBusLine) => void}
             dispatch(updateOrAddLayer(createLayerFromIBusLine(busLines[i])));
         }
     }, [busLines]);
+
+    // Deleting a line
+    const onDelete = (lineId: string) => {
+        // First deleting the line
+        dispatch(deleteBusLine(lineId));
+
+        // Deleting the path layer
+        dispatch(deleteLayer(lineId));
+
+        // Deleting the stop layer
+        dispatch(deleteLayer(`stops-${lineId}`));
+    }
 
     return (
         <Container>
@@ -62,7 +75,9 @@ const BusLinesListComponent = ({onEditLine}: {onEditLine: (d: IBusLine) => void}
                             }}>Edit</Button>
                         </Col>
                         <Col md={"auto"}>
-                            <Button variant={"danger"}>Delete</Button>
+                            <Button variant={"danger"} onClick={(e) => {
+                                onDelete(value.id);
+                            }}>Delete</Button>
                         </Col>
                     </Row>
                 )

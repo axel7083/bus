@@ -26,14 +26,16 @@ export const busLinesSlice = createSlice({
       copy[index] = action.payload;
       state.value = copy;
     },
-    delete: (state,  action: PayloadAction<string>) => {
+    deleteBusLine: (state,  action: PayloadAction<string>) => {
       const copy = [...state.value];
-      //TODO:
+      const index = state.value.findIndex((busLine) => busLine.id === action.payload)
+      copy.splice(index, 1);
+      state.value = copy;
     }
   },
 });
 
-export const { add, update } = busLinesSlice.actions;
+export const { add, update, deleteBusLine } = busLinesSlice.actions;
 
 export const selectBusLines = (state: RootState) => state.busLines.value;
 

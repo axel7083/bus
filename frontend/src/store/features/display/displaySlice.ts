@@ -55,10 +55,16 @@ export const displaySlice = createSlice({
 
       state.value = copy;
     },
+    deleteLayer: (state,  action: PayloadAction<string>) => {
+      const copy = {layers: [...state.value.layers]};
+      const index = state.value.layers.findIndex((layer) => layer.id === action.payload)
+      copy.layers.splice(index, 1);
+      state.value = copy;
+    }
   },
 });
 
-export const { setVisibility, addLayer, updateOrAddLayer } = displaySlice.actions;
+export const { setVisibility, addLayer, updateOrAddLayer, deleteLayer } = displaySlice.actions;
 
 export const selectDisplay = (state: RootState) => state.display.value;
 
