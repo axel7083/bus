@@ -18,7 +18,10 @@ class BusLine:
         :param board: The Running board of the line
         """
         self.__identifier = identifier
-        self.__path = path
+        if path is None:
+            raise ValueError("The path of the bus line cannot be None")
+        self.__path = path.copy()
+        
         if self.__path[0].get_position().get_begin_point() != self.__path[-1].get_position().get_end_point():
             raise ValueError(
                 f"The path must loop but the end is at {str(self.__path[-1].get_position().get_end_point())}\
@@ -48,7 +51,7 @@ class BusLine:
 
     def get_running_board(self) -> RunningBoard:
         """
-        :return: The running bord of the bus line
+        :return: The running board of the bus line
         """
         return self.__runningBoard
 
