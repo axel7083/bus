@@ -1,11 +1,6 @@
-from random import randint
-from typing import Tuple
 from .Point2D import Point2D
 from .Bus import Bus
-
-""" Class that represents the bus Stops, it inherits from Point2D as we consider it as a point on the road.
-@Author: Jean Maccou
-"""
+from random import randint
 
 
 class BusStop(Point2D):
@@ -25,12 +20,6 @@ class BusStop(Point2D):
         self.__name = name
         self.__attractivity = attractivity
 
-    def __eq__(self, __o: object) -> bool:
-        if isinstance(__o, BusStop):
-            return hash(__o) == hash(self)
-        else:
-            return False
-
     def __hash__(self):
         return hash(f"{self.get_pos()}:{self.get_name()}")
 
@@ -49,12 +38,6 @@ class BusStop(Point2D):
         """
         return self.__nbClient
 
-    def get_pos(self) -> Tuple[float, float]:
-        """ Getter on the position of the bus stop
-        :return: the position of the bus stop as a tuple of 2 floats x and y
-        """
-        return self.get_x(), self.get_y()
-
     def set_attractivity(self, newAttractivity: int) -> None:
         """ Setter on the parameter __attractivity
         :param newAttractivity: the new attractivity of the bus stop
@@ -68,15 +51,19 @@ class BusStop(Point2D):
         assert newClients >= 0
         self.__nbClient += newClients
 
-    def bus_happens(self, bus: Bus):
+    def bus_happens(self, bus: Bus) -> int:
         """ Function that handle when a bus arrives on a bus stop
         This function remove passengers of the bus based on a random int that is weighted function of the attractivity of the bus stop
         :param bus: the instance of the bus we have to handle with
         """
-        bus.remove_passenger(self.__weightedrandint(bus.get_passenger(), self.__attractivity))
+        removed_passenger_count =(self.__weightedrandint(bus.get_passenger(), self.__attractivity))
+        bus.remove_passenger(removed_passenger_count)
+        print(" - Descente: il reste " + str(bus.get_passenger()) + " personne(s) à bord")
         newPassengers = max(self.__nbClient, bus.get_capacity() - bus.get_passenger())
         bus.add_passenger(newPassengers)
-        self.__nbClient -= newPassengers
+        print(" - Montée : il reste " + str(bus.get_passenger()) + " personne(s) à bord")
+        self.__nbClient = self.__nbClient - newPassengers
+        return removed_passenger_count
 
     @staticmethod
     def __weightedrandint(max: int, weight: int) -> int:
@@ -86,7 +73,7 @@ class BusStop(Point2D):
             - weight = 1 : we sum a certain number of randint to simulate a normal law, and we flip every result that is bigger than the maximum
             - weight = 2 : we return a randint
             - weight = 3 : we do the same as for weight = 1 but we substract the result to the max in the goal to invert the result
-        :return: a weighted random int useful for the function bus_happens 
+        :return: a weighted random int useful for the function bus_happens
         """
         if weight == 0:
             return max

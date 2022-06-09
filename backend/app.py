@@ -1,12 +1,9 @@
 from flask import Flask, request
-
-from models.Line import Line
-from models.Point2D import Point2D
 from osm import *
 from flask_cors import CORS
 import json
 
-from utils.time import simulateLine
+from utils.time import simulateLine, magic
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -36,7 +33,14 @@ def nodes():
 def stats_line():
     data = request.get_json()
     print(data)
-    return simulateLine(data)
+    return json.dumps(simulateLine(data))
+
+
+@app.route('/dashboard', methods=['POST'])
+def dashboard():
+    data = request.get_json()
+    print(data)
+    return json.dumps(magic(data))
 
 
 allowed = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "unclassified"]
@@ -90,23 +94,6 @@ def explorer_node():
     output['nodes_meta'] = nodes_meta
     return json.dumps(output)
 
-
-# useless ??
-#@app.route("/create/line/<string:name>")
-#def create_line(name):
-#    data = request.get_json()
-#    points = [Point2D(pt["x"], pt["y"]) for pt in data["path"]]
-#    lines = []
-#    for i in range(len(points) - 1):
-#        lines.append(
-#            Line(points[i], points[i + 1])
-#        )
-#
-#    if points[0] != points[-1]:
-#        lines.append(
-#            Line(points[-1], points[0])
-#        )
-#
 
 if __name__ == '__main__':
     app.run()

@@ -1,91 +1,18 @@
 import Container from "react-bootstrap/Container";
-import { useEffect, useState } from "react";
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+import {useAppSelector} from "../../../store/hooks";
+import {selectBusLines} from "../../../store/features/busLines/busLinesSlice";
 
-interface IGlobalStat {
-    nb_bus: number;
-    nb_driver: number;
-}
-interface IStatsGl {
-    nbBus: string;
-    NbDriver: string;
-}
+const GlobalStatistics = ({totaldelayCounter, busCount, driverCount}: {totaldelayCounter: number, busCount: number, driverCount: number}) => {
 
-const GlobalStatistics = () => {
-    const [nbDriverC, setnbDiverC] = useState(0);
-    const [nbDriverLineC, setDriverPerLineC] = useState(0);
-    const [nbBusC, setnbBusC] = useState(0);
-    const [nbBusPerLineC, setnbBusPerLineC] = useState(0);
-    const [nbExchangeC, setnbExchangeC] = useState(0);
-    const [nbDelayC, setnbDelayC] = useState(0);
-    let driverCounter = 0;
-    let busCounter = 0;
-    let exchangeCounter = 0;
-    let delayCounter = 0;
-    useEffect(() => {
-        fetch('http://localhost:3000/dataBaseLineIdentity.json')
-            .then(response => response.json()) // Transform the response in json
-            .then(response => {
-                console.log("dashboard:", response);
-                driverCounter = 0;
-                busCounter = 0;
-                exchangeCounter = 0;
-                for (let i = 0; i < response.length; i++) {
-                    driverCounter = driverCounter + response[i].nb_driver;
-                    busCounter = busCounter + response[i].nb_bus;
-                    if (response[i].exchange != undefined) {
-                        for (let j = 0; j < response[i].exchange.length; j++) {
-                            if (response[i].exchange[j] != "") {
-                                exchangeCounter = exchangeCounter + 1;
-                            }
-                        }
-                    }
-                }
-                setnbExchangeC(exchangeCounter);
-                setnbDiverC(driverCounter);
-                setnbBusC(busCounter);
-                setDriverPerLineC(Math.floor(driverCounter / (response.length + 1)));
-                setnbBusPerLineC(Math.floor(busCounter / (response.length + 1)));
-
-
-            })
-            .catch(error => {
-                console.log("error:");
-                console.log(error);
-            });
-    }, []);
-
-
-
-    useEffect(() => {
-        fetch('http://localhost:3000/dbResultSimulation.json')
-            .then(response => response.json()) // Transform the response in json
-            .then(response => {
-                delayCounter = 0;
-                for (let i = 0; i < response.length; i++) {
-                    for (let j = 0; j < response[i].horraire.length; j++) {
-                        delayCounter = delayCounter + parseInt(response[i].horraire[j][5]);
-                    }
-                }
-                setnbDelayC(delayCounter / (response.length+1));
-               })
-            .catch(error => {
-                console.log("error:");
-                console.log(error);
-            });
-    }, [0]);
-
-
-
-
+    const busLines = useAppSelector(selectBusLines);
     return (
         <Container style={{backgroundColor: "white", padding: "10px", borderRadius: "10px", margin: "0.5em"}}>
-                <Row className="DashboardCellExchange"><p>Exchange point Count</p><p>{nbExchangeC}</p></Row>
-                <Row className="DashboardCellNbBus"><p>Bus Count</p><p>{nbBusC}</p><p>avg per line : {nbBusPerLineC}</p></Row>
-                <Row className="DashboardCellPop"><p>Population covered</p><p>TO DO with PYTHON</p></Row>
-                <Row className="DashboardCellNbDriver"><p>Driver Count </p><p>{nbDriverC}</p><p>avg per line : {nbDriverLineC}</p></Row>
-                <Row className="DashboardCellNbDelay"><p>Delay Trigger</p><p>avg. per line : {nbDelayC}</p></Row>
+                <Row className="DashboardCellExchange"><p>Exchange point Count</p><p>0</p></Row>
+                <Row className="DashboardCellNbBus"><p>Bus Count</p><p>{busCount}</p><p>avg per line : {busCount/busLines.length}</p></Row>
+                <Row className="DashboardCellNbDriver"><p>Driver Count </p><p>{driverCount}</p><p>avg per line : {driverCount/busLines.length}</p></Row>
+                <Row className="DashboardCellNbDelay"><p>Delay Trigger</p><p>avg. per line : {totaldelayCounter}</p></Row>
 
 
         </Container>

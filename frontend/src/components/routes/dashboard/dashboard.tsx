@@ -5,6 +5,10 @@ import { Col, Row, Table} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Expenses from "./Expenses";
 import GlobalStatistics from "./GlobalStatistics";
+import {useAppSelector} from "../../../store/hooks";
+import {selectBusLines} from "../../../store/features/busLines/busLinesSlice";
+import {latLng} from "leaflet";
+import {timeFromInt} from "time-number";
 
 interface IDash {
     name: string;
@@ -15,16 +19,53 @@ interface IDash {
 
 const Dashboard = () => {
 
+    const busLines = useAppSelector(selectBusLines);
 
     const [totalDelayC, setTotalDelayC] = useState(0);
     const [totalCriticDelay, settotalCriticDelay] = useState(0); //1
-    let totaldelayCounter = 0;
+    const [dashResult, setdashResult] = useState<IDash[]>([]);
+
+    const [busCount, setBusCount] = useState<number>(0);
+    const [driverCount, setDriverCount] = useState<number>(0);
+
+
     useEffect(() => {
-        fetch('http://localhost:3000/dbResultSimulation.json')
-            .then(response => response.json()) // Transform the response in json
+
+        fetch('http://localhost:5000/dashboard', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(busLines.map((busLine) => {
+                return {
+                    id_line: busLine.id,
+                    name: busLine.name,
+                    horraire: busLine.busStops.map((stop) => {
+                        return {
+                            long: latLng(stop.position).lng,
+                            lat: latLng(stop.position).lat,
+                            name: stop.name,
+                            hours: timeFromInt(Number(stop.schedule)),
+                            attractiveness: stop.attractiveness,
+                        }
+                    }),
+                    nb_bus: busLine.busCount,
+                    nb_driver: busLine.conductorCount,
+                }
+            })),
+        }).then(response => response.json())
             .then(response => {
                 console.log("result:", response);
-                totaldelayCounter = 0;
+                let totaldelayCounter = 0;
+                let busCount = 0;
+                let driverCount = 0 ;
+                for (let i = 0; i < busLines.length; i++) {
+                    busCount += busLines[i].busCount;
+                    driverCount += busLines[i].conductorCount;
+                }
+                setBusCount(busCount);
+                setDriverCount(driverCount);
+
                 for (let i = 0; i < response.length; i++) {
                     for (let j = 0; j < response[i].horraire.length; j++) {
                         totaldelayCounter = totaldelayCounter + parseInt(response[i].horraire[j][5]);
@@ -33,100 +74,72 @@ const Dashboard = () => {
 
                 setTotalDelayC(totaldelayCounter);
 
+
+                let nb_critic_delay = 0;
+
+                for (let i = 0; i < response.length; i++) {
+                    nb_critic_delay = 0;
+                    for (let j = 0; j < response[i].horraire.length; j++) {
+                        if (compareEarlierArrival(response[i].horraire[j][1], response[i].horraire[j][2])){
+                            nb_critic_delay++;
+                        }
+                        if (compareLatestArrival(response[i].horraire[j][1], response[i].horraire[j][3])) {
+                            nb_critic_delay++;
+                        }
+                        if (compareAverageArrival(response[i].horraire[j][1], response[i].horraire[j][4])) {
+                            nb_critic_delay++;
+                        }
+                    }
+                }
+                settotalCriticDelay(nb_critic_delay);
+                setdashResult(response);
             })
             .catch(error => {
                 console.log("error:");
                 console.log(error);
-            });
-    }, []);
-
-    const [dashResult, setdashResult] = useState<IDash[]>([]);
-
-    let nb_critic_delay = 0;
-        useEffect(() => {
-            // Fetch
-            fetch('http://localhost:3000/dbResultSimulation.json')
-                .then(response => response.json()) // Transform the response in json
-                .then(response => {
-                    console.log("IDashR:", response);
-                    nb_critic_delay = 0;
-
-                    for (let i = 0; i < response.length; i++) {
-                        nb_critic_delay = 0;
-                        for (let j = 0; j < response[i].horraire.length; j++) {
-                            if (compareEarlierArrival(response[i].horraire[j][1], response[i].horraire[j][2])){
-                                nb_critic_delay++;
-                            }
-                            if (compareLatestArrival(response[i].horraire[j][1], response[i].horraire[j][3])) {
-                                nb_critic_delay++;
-                            }
-                            if (compareAverageArrival(response[i].horraire[j][1], response[i].horraire[j][4])) {
-                                nb_critic_delay++;
-                            }  
-                        }
-                    }
-                    settotalCriticDelay(nb_critic_delay);
-                    setdashResult(response);
-                    })
-         
-                .catch(error => {
-                    console.log("error:");
-                    console.log(error);
-                });
-        }, []);
-
+            })
+    }, [busLines]);
 
 
     const [nbDriver2C, setnbDriver2C] = useState(0);
-        let driverCounter2 = 0;
-        useEffect(() => {
-            fetch('http://localhost:3000/dataBaseLineIdentity.json')
-                .then(response => response.json()) // Transform the response in json
-                .then(response => {
-                    driverCounter2 = 0;
-                    for (let i = 0; i < response.length; i++) {
-                        driverCounter2 = driverCounter2 + response[i].nb_driver;
-                    }
-                    setnbDriver2C(driverCounter2);
-                })
-                .catch(error => {
-                    console.log("error:");
-                    console.log(error);
-                });
-        }, []);
 
-    
-
-
-
-        function compareLatestArrival(h1: string, h2: string) {
-            let minutesH1 = parseInt(h1[3] + h1[4]);
-            let minutesH2 = parseInt(h2[3] + h2[4]);
-            if ((h1 == h2 || minutesH1 + 5 > minutesH2) || (minutesH1 + 10 > minutesH2) ) {
-                return false;
-            }
-            else {
-                return true;
-            }
+    useEffect(() => {
+        let count = 0;
+        for (let i = 0; i < busLines.length; i++) {
+            count += busLines[i].conductorCount;
         }
-       
-        function compareAverageArrival(h1: string, h2: string) {
-            let minutesH1 = parseInt(h1[3] + h1[4]);
-            let minutesH2 = parseInt(h2[3] + h2[4]);
-            if (((minutesH2 <= minutesH1 + 1 && minutesH2 >= minutesH1 - 1) || (minutesH2 <= minutesH1 + 3 && minutesH2 >= minutesH1 - 3))) {
-                return false;
-            }
-            else {
-                return true;
-            }
+        setnbDriver2C(count);
+    }, [busLines]);
+
+
+    function compareLatestArrival(h1: string, h2: string) {
+        let minutesH1 = parseInt(h1[3] + h1[4]);
+        let minutesH2 = parseInt(h2[3] + h2[4]);
+        if ((h1 == h2 || minutesH1 + 5 > minutesH2) || (minutesH1 + 10 > minutesH2) ) {
+            return false;
         }
-        function compareEarlierArrival(h1: string, h2: string) {
-            if (h2 > h1) {
-                return true;
-            }
-            else {
-                return false;
-            }
+        else {
+            return true;
+        }
+    }
+
+    function compareAverageArrival(h1: string, h2: string) {
+        let minutesH1 = parseInt(h1[3] + h1[4]);
+        let minutesH2 = parseInt(h2[3] + h2[4]);
+        if (((minutesH2 <= minutesH1 + 1 && minutesH2 >= minutesH1 - 1) || (minutesH2 <= minutesH1 + 3 && minutesH2 >= minutesH1 - 3))) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function compareEarlierArrival(h1: string, h2: string) {
+        if (h2 > h1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -161,7 +174,7 @@ const Dashboard = () => {
 
             <Row>
                 <Col lg={4}>
-                    <GlobalStatistics></GlobalStatistics>
+                    <GlobalStatistics driverCount={driverCount} busCount={busCount} totaldelayCounter={totalDelayC} />
                 </Col>
                 <Col>
                     
@@ -183,8 +196,12 @@ const Dashboard = () => {
                                 {
                                     dashResult?.map((value, index) => {
                                         let name = value.name;
-                                        nb_critic_delay = 0;
+                                        let nb_critic_delay = 0;
                                         let all_horaire = value.horraire;
+
+                                        if(all_horaire.length === 0)
+                                            return <></>
+
                                         let j = all_horaire.length - 1;
                                         let firstHour = all_horaire[j][1];
                                         let secondHour = all_horaire[j][3];
