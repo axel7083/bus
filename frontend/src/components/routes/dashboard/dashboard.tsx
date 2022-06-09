@@ -29,6 +29,9 @@ const Dashboard = () => {
     const [driverCount, setDriverCount] = useState<number>(0);
 
 
+    const [totalPassenger, setTotalPassenger] = useState<number>(0);
+    const [totalFullC, setTotalFullC] = useState<number>(0);
+
     useEffect(() => {
 
         fetch('http://localhost:5000/dashboard', {
@@ -59,6 +62,7 @@ const Dashboard = () => {
                 let totaldelayCounter = 0;
                 let busCount = 0;
                 let driverCount = 0 ;
+
                 for (let i = 0; i < busLines.length; i++) {
                     busCount += busLines[i].busCount;
                     driverCount += busLines[i].conductorCount;
@@ -66,13 +70,20 @@ const Dashboard = () => {
                 setBusCount(busCount);
                 setDriverCount(driverCount);
 
+                let passager = 0;
+                let countFull = 0;
                 for (let i = 0; i < response.length; i++) {
                     for (let j = 0; j < response[i].horraire.length; j++) {
                         totaldelayCounter = totaldelayCounter + parseInt(response[i].horraire[j][5]);
                     }
+                    passager += response[i].passager;
+                    countFull+= response[i].nb_time_full;
                 }
 
+                setTotalPassenger(passager);
                 setTotalDelayC(totaldelayCounter);
+                setTotalFullC(countFull);
+
 
 
                 let nb_critic_delay = 0;
@@ -240,7 +251,20 @@ const Dashboard = () => {
 
 
 
+                    <Row className="color" style={{ backgroundColor: "white", padding: "10px", borderRadius: "10px", margin: "0.5em" }}>
+                        <Row className="color">
+                            <Col className="color">
+                                <h4>Usesul or not?</h4>
+                                <Container>
+                                    <Row>
+                                        <Col className="DashboardCellNbDriver"><p> Number of passenger on the simulation:</p> <p>{totalPassenger} </p></Col>
+                                        <Col className="DashboardCellNbDriver"><p> Number of time a bus was full:</p> <p>{totalFullC}</p></Col>
+                                    </Row>
+                                </Container>
+                            </Col>
+                        </Row>
 
+                    </Row>
 
 
 
