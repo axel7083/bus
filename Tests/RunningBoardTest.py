@@ -6,7 +6,7 @@ from Code.StopSchedule import StopSchedule
 
 """
 Tests for the RunningBoard class
-@Author: cobrecht
+@Author: Cyril Obrecht
 """
 
 

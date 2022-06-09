@@ -1,6 +1,6 @@
 """ This class implements the class Bus. We consider a Bus as 3 parameters, his maximum capacity, his number of passengers and his speed.
 
-@Author: jmaccou
+@Author: Jean Maccou
 """
 
 

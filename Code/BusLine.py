@@ -3,8 +3,9 @@ from typing import List
 from .Road import Road
 from .RunningBoard import RunningBoard
 
-"""
-@Author: cobrecht
+""" This class implements bus lines. We consider a bus line as 3 parameters, it's identifier, his path and his RunningBoard.
+
+@Author: Cyril Obrecht
 """
 
 

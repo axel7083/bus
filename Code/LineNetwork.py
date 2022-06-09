@@ -1,8 +1,8 @@
-"""
-@Author: cobrecht
-"""
 from .BusLine import BusLine
 
+"""
+@Author: Cyril Obrecht
+"""
 
 class LineNetwork:
     def __init__(self):
@@ -14,5 +14,8 @@ class LineNetwork:
         self.__cache = {}
 
     def add_line(self, line: BusLine):
+        """ Add a line to the network.
+        :param line: The line to add
+        """
         if self.__index[line.get_identifier()] is not None:
             raise ValueError(f"A line with the name {line.get_identifier()} already exist")

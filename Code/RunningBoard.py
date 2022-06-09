@@ -2,7 +2,7 @@ from .BusStop import BusStop
 from .StopSchedule import StopSchedule
 
 """
-@Author: cobrecht
+@Author: Cyril Obrecht
 """
 
 
@@ -107,9 +107,9 @@ class RunningBoard:
         return val.strip()
 
     def __iter__(self):
-        return RunningBoard.RunningBoardIterator(self.__timetable, self.__index_map)
+        return RunningBoard.__RunningBoardIterator(self.__timetable, self.__index_map)
 
-    class RunningBoardIterator:
+    class __RunningBoardIterator:
         def __init__(self, timetable, index_map):
             self.__timetable = timetable
             self.__index_map = index_map

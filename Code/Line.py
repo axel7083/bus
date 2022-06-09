@@ -1,13 +1,18 @@
 from .Point2D import Point2D
 from typing import Tuple
 
-"""
-@Author: cobrecht
+""" Class that we use to represent a line using two points.
+
+@Author: Cyril Obrecht
 """
 
 
 class Line:
     def __init__(self, begin: Point2D, end: Point2D):
+        """
+        :param begin: The beginning point of the line.
+        :param end: The ending point of the line.
+        """
         self.__begin_point = begin
         self.__ending_point = end
 

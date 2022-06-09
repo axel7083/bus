@@ -6,7 +6,7 @@ from Point2D import Point2D
 
 """
 Test cases for the Circle class
-@Author: cobrecht
+@Author: Cyril Obrecht
 """
 
 

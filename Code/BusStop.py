@@ -5,7 +5,7 @@ from .Bus import Bus
 
 """ Class that represents the bus Stops, it inherits from Point2D as we consider it as a point on the road.
 
-@Author: jmaccou
+@Author: Jean Maccou
 """
 
 

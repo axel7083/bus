@@ -4,7 +4,7 @@ from .Point2D import Point2D
 """ This class reprensent a circle in a 2 dimentionnal space defined by 2 values. It's center that is defined by a Point2D, and it's radius defined by a float.
 This class is useful to represent zones with their density of population.
 
-@Author: jmaccou
+@Author: Jean Maccou
 """
 
 
@@ -29,12 +29,17 @@ class Circle:
         """
         return self.__radius
 
-    def set_radius(self, newRadius: float):
+    def set_radius(self, newRadius: float) -> None:
         """
         :param newRadius: the new radius of the circle.
         """
         self.__radius = newRadius
 
-    def is_on_disk(self, point: Point2D):
+    def is_on_disk(self, point: Point2D) -> bool:
+        """ This function check if a point is on the disk defined by the circle.
+        To do that we calculate the distance between the point and the center of the circle and we check if it's lower than the radius of the circle.
+        
+        :param point: a Point2D that represent a point that we want to check if it's on the disk or not.
+        """
         distance = sqrt((self.__center.get_x() - point.get_x()) ** 2 + (self.__center.get_y() - point.get_y()) ** 2)
         return distance < self.__radius

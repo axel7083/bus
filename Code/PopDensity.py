@@ -1,7 +1,9 @@
 from .Circle import Circle
 from .Point2D import Point2D
 
-"""This Class is used to represent a density of population on a map. It depends on a point and a level of density."""
+""" This Class is used to represent a density of population on a map. It depends on a point and a level of density.
+@Author: Jean Maccou
+"""
 
 
 class PopDensity(Circle):
