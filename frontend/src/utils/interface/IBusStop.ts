@@ -7,4 +7,5 @@ export interface IBusStop {
     id: string;
     previousNodeId: string;
     nextNodeId: string;
+    attractiveness: number;
 }

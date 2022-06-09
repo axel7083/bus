@@ -41,6 +41,7 @@ const BusLineDelay = ({ id }: props2) => {
     let nb_medium_delay = 0;
     let total_stop = 0;
     var nb_exchange = 0;
+
     useEffect(() => {
         //console.log("useEffect BusLineDelay");
         // Fetch
@@ -49,9 +50,22 @@ const BusLineDelay = ({ id }: props2) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({id_line: busLine.id, name: busLine.name, horraire: busLine.busStops.map((stop) => {
-                return {long: latLng(stop.position).lng, lat: latLng(stop.position).lat, name: stop.name, hours: timeFromInt(Number(stop.schedule))}
-                })}),
+            body: JSON.stringify({
+                id_line: busLine.id,
+                name: busLine.name,
+                horraire: busLine.busStops.map((stop) => {
+                return {
+                    long: latLng(stop.position).lng,
+                    lat: latLng(stop.position).lat,
+                    name: stop.name,
+                    hours: timeFromInt(Number(stop.schedule)),
+                    attractiveness: stop.attractiveness,
+                }
+                }),
+                nb_bus: busLine.busCount,
+                nb_driver: busLine.conductorCount,
+
+            }),
         })
             .then(response => response.json()) // Transform the response in json
             .then(response => {

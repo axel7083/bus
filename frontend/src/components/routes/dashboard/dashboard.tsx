@@ -6,20 +6,12 @@ import Container from "react-bootstrap/Container";
 import Expenses from "./Expenses";
 import GlobalStatistics from "./GlobalStatistics";
 
-
-
-type props = {
-    id: number
-}
-
 interface IDash {
     name: string;
     criticity: string;
     horraire: string[][];
     id_line: number;
 }
-
-
 
 const Dashboard = () => {
 

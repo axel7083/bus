@@ -32,11 +32,6 @@ def nodes():
     return get_nodes(way_id)
 
 
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
-
-
 @app.route('/stats', methods=['POST'])
 def stats_line():
     data = request.get_json()
@@ -96,21 +91,22 @@ def explorer_node():
     return json.dumps(output)
 
 
-@app.route("/create/line/<string:name>")
-def create_line(name):
-    data = request.get_json()
-    points = [Point2D(pt["x"], pt["y"]) for pt in data["path"]]
-    lines = []
-    for i in range(len(points) - 1):
-        lines.append(
-            Line(points[i], points[i + 1])
-        )
-
-    if points[0] != points[-1]:
-        lines.append(
-            Line(points[-1], points[0])
-        )
-
+# useless ??
+#@app.route("/create/line/<string:name>")
+#def create_line(name):
+#    data = request.get_json()
+#    points = [Point2D(pt["x"], pt["y"]) for pt in data["path"]]
+#    lines = []
+#    for i in range(len(points) - 1):
+#        lines.append(
+#            Line(points[i], points[i + 1])
+#        )
+#
+#    if points[0] != points[-1]:
+#        lines.append(
+#            Line(points[-1], points[0])
+#        )
+#
 
 if __name__ == '__main__':
     app.run()

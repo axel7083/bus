@@ -7,8 +7,9 @@ import {selectPosition} from "../../../../../store/features/position/positionSli
 import {ChangeEvent, useEffect, useState} from "react";
 import {latLng, LatLngLiteral} from "leaflet";
 import {updateOrAddLayer} from "../../../../../store/features/display/displaySlice";
-import {Form, FormControl, InputGroup} from "react-bootstrap";
+import {DropdownButton, Form, FormControl, InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
 import IPolyline from "../../../../../utils/interface/IPolyline";
 import {v4} from "uuid";
 import ReactTimePicker from "../../../../utils/ReactTimePicker";
@@ -154,6 +155,7 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
                         schedule: schedule,
                         previousNodeId: bounds[i].previous,
                         nextNodeId: bounds[i].next,
+                        attractiveness: 2,
                     }]
                 }))
                 break;
@@ -161,6 +163,31 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
         }
 
     }, [position]);
+
+
+    const get_attractiveness_str = (id: number): string => {
+        switch (id) {
+            case 1:
+                return "Low"
+            case 2:
+                return "Medium"
+            case 3:
+                return "High"
+        }
+        return "None"
+    }
+
+    const get_attractiveness_value = (str: string): number => {
+        switch (str) {
+            case "#low":
+                return 1;
+            case "#medium":
+                return 2;
+            case "#high":
+                return 3;
+        }
+        return -1;
+    }
 
     return (
         <Row>
@@ -195,6 +222,29 @@ const BusLineStopsEditorComponent = ({id}: {id: string}) => {
                                 }}
                                 value={value.schedule}
                             />
+                            <DropdownButton
+                                variant="outline-secondary"
+                                title={get_attractiveness_str(value.attractiveness)}
+                                id="input-group-dropdown-1"
+                                style={{backgroundColor: "#e9ecef"}}
+                                onSelect={(e) => {
+                                    if(e === null)
+                                        return;
+                                    const busStopsCopy = [...busLine.busStops];
+                                    const busStop = {...busStopsCopy[index]}
+                                    busStop.attractiveness = get_attractiveness_value(e);
+                                    busStopsCopy[index] = busStop;
+
+                                    dispatch(update({
+                                        ...busLine,
+                                        busStops: busStopsCopy
+                                    }));
+                                }}
+                            >
+                                <Dropdown.Item href="#high">High</Dropdown.Item>
+                                <Dropdown.Item href="#medium">Medium</Dropdown.Item>
+                                <Dropdown.Item href="#low">Low</Dropdown.Item>
+                            </DropdownButton>
                             <Button variant="danger" onClick={(e) => {
                                 const busStopsCopy = [...busLine.busStops];
                                 busStopsCopy.splice(index, 1);
