@@ -1,13 +1,17 @@
 from .Point2D import Point2D
 from typing import Tuple
 
-"""
-@Author: cobrecht
+""" Class that we use to represent a line using two points.
+@Author: Cyril Obrecht
 """
 
 
 class Line:
     def __init__(self, begin: Point2D, end: Point2D):
+        """
+        :param begin: The beginning point of the line.
+        :param end: The ending point of the line.
+        """
         self.__begin_point = begin
         self.__ending_point = end
 
@@ -33,13 +37,9 @@ class LineMath:
     Helper class which contains static methods to operate with lines
     """
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def get_perpendicular(a: float, b: float, point: Point2D):
         """
-
         :param a: the value of a in the equation ax + by + c= 0 which describes the line you want to find
          the perpendicular line to
         :param b: the value of b in the equation ax + by + c= 0 which describes the line you want to find

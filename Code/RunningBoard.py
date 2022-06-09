@@ -2,7 +2,7 @@ from .BusStop import BusStop
 from .StopSchedule import StopSchedule
 
 """
-@Author: cobrecht
+@Author: Cyril Obrecht
 """
 
 
@@ -14,7 +14,6 @@ class RunningBoard:
     def add_entry(self, bus_stop: BusStop, schedule: StopSchedule) -> None:
         """
         Adds a new entry to the running board.
-
         :param bus_stop: The bus stop to add
         :param schedule: The associated schedule to add
         """
@@ -82,7 +81,6 @@ class RunningBoard:
     def remove_entry_by_schedule(self, schedule_order: int) -> None:
         """
         Removes an entry from the running board by its schedule order.
-
         :param schedule_order: The order of the schedule to remove
         """
         if schedule_order not in self.__index_map:
@@ -107,9 +105,9 @@ class RunningBoard:
         return val.strip()
 
     def __iter__(self):
-        return RunningBoard.RunningBoardIterator(self.__timetable, self.__index_map)
+        return RunningBoard.__RunningBoardIterator(self.__timetable, self.__index_map)
 
-    class RunningBoardIterator:
+    class __RunningBoardIterator:
         def __init__(self, timetable, index_map):
             self.__timetable = timetable
             self.__index_map = index_map

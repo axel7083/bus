@@ -1,6 +1,5 @@
 """ This class implements the class Bus. We consider a Bus as 3 parameters, his maximum capacity, his number of passengers and his speed.
-
-@Author: jmaccou
+@Author: Jean Maccou
 """
 
 
@@ -20,7 +19,6 @@ class Bus:
 
     def __str__(self) -> str:
         """ Create a way to transform the state of the bus into a string.
-
         :return: the state of the bus in a string.
         """
         state = 'Capacity = ' + str(self.get_capacity()) + '\nSpeed = ' + str(

@@ -2,14 +2,13 @@ from .Line import Line, LineMath
 from .Point2D import Point2D
 
 """
-@Author: cobrecht
+@Author: Cyril Obrecht
 """
 
 
 class Road:
     """
     class representing a Road, a road is characterized by a line, a value of traffic and a speedlimit.
-
     :param position: the line representing the position of the road
     :param traffic: a float which is a factor by which the speedlimit will be multiplied to get the effective speed
     :param speedlimit: the speed limit of the road
@@ -46,8 +45,6 @@ class Road:
         B = ending of a road \n
         ▬ = road \n
         ─ = limit of the tolerance zone \n \n \n
-
-
         .(x1;y1)\n
         ┌───────────────────────────┐  ^\n
         |         .(x2;y2)          |  | tolerance X\n
@@ -56,12 +53,10 @@ class Road:
         |                           |  ^\n
         |                           |  | tolerance X\n
         └───────────────────────────┘  v\n\n
-
         We have a road from a point A to a point B with the length D[AB].
         To determine if a bus stop is on the road, we surround the road AB with a rectangle (width : 2X and length: [AB])
         and we check if the point is inside the rectangle(see drawing above) .
         In the example above, the point (x1;y1) does not belong to the road but the point(x2;y2) does.
-
         :param point: the point to check
         :param tolerance: the size of the tolerance zone
         :return: true if the point belongs to the road, false otherwise
