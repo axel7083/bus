@@ -1,4 +1,7 @@
 from flask import Flask, request
+
+from backend.models.Line import Line
+from backend.models.Point2D import Point2D
 from osm import *
 from flask_cors import CORS
 import json
@@ -42,6 +45,7 @@ def stats_line():
 
 
 allowed = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "unclassified"]
+
 
 @app.route('/explorer_node', methods=['GET'])
 def explorer_node():
@@ -90,6 +94,22 @@ def explorer_node():
 
     output['nodes_meta'] = nodes_meta
     return json.dumps(output)
+
+
+@app.route("/create/line/<string:name>")
+def create_line(name):
+    data = request.get_json()
+    points = [Point2D(pt["x"], pt["y"]) for pt in data["path"]]
+    lines = []
+    for i in range(len(points) - 1):
+        lines.append(
+            Line(points[i], points[i + 1])
+        )
+
+    if points[0] != points[-1]:
+        lines.append(
+            Line(points[-1], points[0])
+        )
 
 
 if __name__ == '__main__':

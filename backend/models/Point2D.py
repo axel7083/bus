@@ -1,7 +1,9 @@
+"""
+This class represent a point in a 2 dimentional space. It's define by two values. It's position on the x-axis and its position on the y-axis.
+"""
+
+
 class Point2D:
-    """
-    This class represent a point in a 2 dimentional space. It's define by two values. It's position on the x-axis and its position on the y-axis.
-    """
     def __init__(self, x: float, y: float):
         """ Constructor for the class Point2D.
         :param x: the position of the point on the x-axis.
@@ -21,3 +23,8 @@ class Point2D:
         :return: the position of the point on the y-axis
         """
         return self.__y
+
+    def __eq__(self, other):
+        if isinstance(other, Point2D):
+            return other.get_x() == self.get_x() and other.get_y() == other.get_y()
+        return False
